@@ -227,7 +227,7 @@ public class MCAMS {
 	
 	private static void editComposer(int userId) {
 		// TODO Auto-generated method stub
-		
+		System.out.println("Edit composer method");
 	}
 
 	
