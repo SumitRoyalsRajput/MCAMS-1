@@ -6,8 +6,8 @@ import com.mcams.bean.SongBean;
 
 public interface IUserService {
 
-	ArrayList<SongBean> searchArtist(String name);
+	ArrayList<SongBean> searchArtistSong(String name);
 
-	ArrayList<SongBean> searchComposer(String name);
+	ArrayList<SongBean> searchComposerSong(String name);
 
 }

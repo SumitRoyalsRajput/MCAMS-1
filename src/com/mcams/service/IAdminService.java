@@ -12,8 +12,12 @@ public interface IAdminService {
 
 	int createComposer(ComposerBean compBean, boolean isUpdate);
 
-	ArrayList<SongBean> searchArtist(String name);
+	ArrayList<SongBean> searchArtistSong(String name);
 
-	ArrayList<SongBean> searchComposer(String name);
+	ArrayList<SongBean> searchComposerSong(String name);
+
+	ArtistBean searchArtist(String name);
+
+	ComposerBean searchComposer(String name);
 
 }

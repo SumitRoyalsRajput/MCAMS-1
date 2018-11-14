@@ -132,8 +132,8 @@ public class MCAMS {
 			switch(choice){
 			case 1: createAC(userId,password); break;
 			case 2: editAC(userId); break;	
-			case 3: songAssociation(); break;
-			case 4: searchAC(userId); break;
+			case 3: songAssociation(userId); break;
+			case 4: searchAC(); break;
 			case 5: attempt=3; return;
 			case 6: exit();
 			default: System.out.println("Please enter valid choice!\n");
@@ -154,7 +154,7 @@ public class MCAMS {
 			choice = valService.validateChoice(scan.nextLine());
 			
 			switch(choice) {
-			case 1: searchAC(userId); break;
+			case 1: songAssociation(userId); break;
 			case 2: return;
 			case 3: exit();
 			default: System.out.println("\nPlease enter valid choice!\n");
@@ -227,7 +227,7 @@ public class MCAMS {
 	
 	private static void editComposer(int userId) {
 		// TODO Auto-generated method stub
-		System.out.println("Edit composer method");
+		
 	}
 
 	
@@ -237,12 +237,97 @@ public class MCAMS {
 		
 	}
 
-	private static void songAssociation() {
-		// TODO Auto-generated method stub
+	private static void searchAC() {
+		clearScreen();
+		String choice;
+		while(true) {
+			System.out.println("1. Search Artist");
+			System.out.println("2. Search Composer");
+			System.out.println("3. Back");
+			System.out.println("4. Exit");
+			System.out.print("Enter your choice: ");
+			choice = scan.nextLine();
+			
+			if(choice.equals("1")) seachArtist();
+			else if(choice.equals("2")) searchComposer();
+			else if(choice.equals("3")) return;
+			else if(choice.equals("4")) exit();
+			else System.out.println("\nPlease enter valid choice!\n");
+		}
 		
 	}
 
-	private static void searchAC(int userId) {
+	private static void searchComposer() {
+		while(true){
+			clearScreen();
+			String name;
+			while(true){
+				System.out.println("\nSEARCH COMPOSER");
+				System.out.print("Enter name: ");
+				name = scan.nextLine();
+				boolean isValid = valService.validateName(name);
+				if(isValid) break;
+				else System.out.println("\nPlease enter valid name! (MinChar:3, MaxChar:50)\n");
+			}
+			
+			ComposerBean getBean = adminService.searchComposer(name);
+			
+			if(getBean != null){
+				System.out.println(getBean.getId()+" "+getBean.getName()+" "+getBean.getCaeipiNumber()+" "+getBean.getMusicSocietyId().toString()+" "+getBean.getBornDate()+" "+getBean.getDiedDate()+" "+getBean.getCreatedBy()+" "+getBean.getCreatedOn()+" "+getBean.getUpdatedBy()+" "+getBean.getUpdatedOn());
+			}
+			else
+				System.out.println("No Record Found");
+			
+			boolean isContinue;
+			while(true) {
+				System.out.println("Do you want to continue? (y/n): ");
+				String choice = scan.nextLine();
+			
+				if(choice.equalsIgnoreCase("y")) {clearScreen(); isContinue=true; break;}
+				else if(choice.equalsIgnoreCase("n")) {clearScreen(); isContinue=false; break;}
+				else System.out.println("\nPlease enter valid choice!");
+			}
+			
+			if(!isContinue) break;
+		}
+	}
+
+	private static void seachArtist() {
+		while(true){
+			clearScreen();
+			String name;
+			while(true){
+				System.out.println("\nSEARCH ARTIST");
+				System.out.print("Enter name: ");
+				name = scan.nextLine();
+				boolean isValid = valService.validateName(name);
+				if(isValid) break;
+				else System.out.println("\nPlease enter valid name! (MinChar:3, MaxChar:50)\n");
+			}
+			
+			ArtistBean getBean = adminService.searchArtist(name);
+			
+			if(getBean != null){
+				System.out.println(getBean.getId()+" "+getBean.getName()+" "+getBean.getBornDate()+" "+getBean.getDiedDate()+" "+getBean.getCreatedBy()+" "+getBean.getCreatedOn()+" "+getBean.getUpdatedBy()+" "+getBean.getUpdatedOn());
+			}
+			else
+				System.out.println("No Record Found");
+			
+			boolean isContinue;
+			while(true) {
+				System.out.println("Do you want to continue? (y/n): ");
+				String choice = scan.nextLine();
+			
+				if(choice.equalsIgnoreCase("y")) {clearScreen(); isContinue=true; break;}
+				else if(choice.equalsIgnoreCase("n")) {clearScreen(); isContinue=false; break;}
+				else System.out.println("\nPlease enter valid choice!");
+			}
+			
+			if(!isContinue) break;
+		}
+	}
+
+	private static void songAssociation(int userId) {
 		clearScreen();
 		String choice;
 		while(true) {
@@ -464,8 +549,8 @@ public class MCAMS {
 			System.out.print("Enter artist name: ");
 			name=scan.nextLine();
 			
-			if(userId==100000) songList=adminService.searchArtist(name);
-			else songList=userService.searchArtist(name);
+			if(userId==100000) songList=adminService.searchArtistSong(name);
+			else songList=userService.searchArtistSong(name);
 			
 			if(songList==null) System.out.println("\nNo record found!\n");
 			else{
@@ -502,8 +587,8 @@ public class MCAMS {
 			System.out.print("Enter composer name: ");
 			name=scan.nextLine();
 			
-			if(userId==100000) songList=adminService.searchComposer(name);
-			else songList=userService.searchComposer(name);
+			if(userId==100000) songList=adminService.searchComposerSong(name);
+			else songList=userService.searchComposerSong(name);
 			
 			if(songList==null) System.out.println("\nNo record found!\n");
 			else{
