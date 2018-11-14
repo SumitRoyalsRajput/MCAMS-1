@@ -9,12 +9,12 @@ public class UserService implements IUserService {
 	static UserDao userDao = new UserDao();
 	
 	@Override
-	public ArrayList<SongBean> searchArtist(String name) {
+	public ArrayList<SongBean> searchArtistSong(String name) {
 		return userDao.searchArtist(name);
 	}
 
 	@Override
-	public ArrayList<SongBean> searchComposer(String name) {
+	public ArrayList<SongBean> searchComposerSong(String name) {
 		return userDao.serachComposer(name);
 	}
 

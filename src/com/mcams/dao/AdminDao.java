@@ -117,7 +117,7 @@ public class AdminDao implements IAdminDao {
 	}
 	
 	@Override
-	public ArrayList<SongBean> searchArtist(String name) {
+	public ArrayList<SongBean> searchArtistSong(String name) {
 		ResultSet rs;
 		SongBean sb = new SongBean();
 		ArrayList<SongBean> songList = new ArrayList<SongBean>();
@@ -150,7 +150,7 @@ public class AdminDao implements IAdminDao {
 	}
 
 	@Override
-	public ArrayList<SongBean> searchComposer(String name) {
+	public ArrayList<SongBean> searchComposerSong(String name) {
 		ResultSet rs;
 		SongBean sb = new SongBean();
 		ArrayList<SongBean> songList = new ArrayList<SongBean>();
@@ -175,6 +175,62 @@ public class AdminDao implements IAdminDao {
 					songList.add(sb);
 				}
 				return songList;
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+			return null;
+		}
+	}
+
+	@Override
+	public ArtistBean searchArtist(String name) {
+		ResultSet rs;
+		ArtistBean ab = new ArtistBean();
+		sql="SELECT * from Artist_Master WHERE Artist_Name="+name+" AND Artist_DeletedFlag=0";
+		try {
+			st = conn.createStatement();
+			rs = st.executeQuery(sql);
+			if(!rs.next()) return null;
+			else {
+				ab.setId(rs.getInt(1));
+				ab.setName(rs.getString(2));
+				ab.setBornDate(rs.getDate(3).toLocalDate());
+				ab.setDiedDate(rs.getDate(4).toLocalDate());
+				ab.setCreatedBy(rs.getInt(5));
+				ab.setCreatedOn(rs.getDate(6).toLocalDate());
+				ab.setUpdatedBy(rs.getInt(7));
+				ab.setUpdatedOn(rs.getDate(8).toLocalDate());
+
+				return ab;
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+			return null;
+		}
+	}
+
+	@Override
+	public ComposerBean searchComposer(String name) {
+		ResultSet rs;
+		ComposerBean cb = new ComposerBean();
+		sql="SELECT * from Composer_Master WHERE Composer_Name="+name+" AND Composer_DeletedFlag=0";
+		try {
+			st = conn.createStatement();
+			rs = st.executeQuery(sql);
+			if(!rs.next()) return null;
+			else {
+				cb.setId(rs.getInt(1));
+				cb.setName(rs.getString(2));
+				cb.setBornDate(rs.getDate(3).toLocalDate());
+				cb.setDiedDate(rs.getDate(4).toLocalDate());
+				cb.setCaeipiNumber(rs.getString(5));
+				cb.setMusicSocietyId(rs.getString(6).toCharArray());
+				cb.setCreatedBy(rs.getInt(7));
+				cb.setCreatedOn(rs.getDate(8).toLocalDate());
+				cb.setUpdatedBy(rs.getInt(9));
+				cb.setUpdatedOn(rs.getDate(10).toLocalDate());
+
+				return cb;
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());

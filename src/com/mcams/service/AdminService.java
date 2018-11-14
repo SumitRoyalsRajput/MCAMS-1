@@ -22,13 +22,22 @@ public class AdminService implements IAdminService {
 	}
 	
 	@Override
-	public ArrayList<SongBean> searchArtist(String name) {
-		return adminDao.searchArtist(name);
+	public ArrayList<SongBean> searchArtistSong(String name) {
+		return adminDao.searchArtistSong(name);
 	}
 
 	@Override
-	public ArrayList<SongBean> searchComposer(String name) {
-		return adminDao.searchComposer(name);
+	public ArrayList<SongBean> searchComposerSong(String name) {
+		return adminDao.searchComposerSong(name);
 	}
 	
+	@Override
+	public ArtistBean searchArtist(String name) {
+		return adminDao.searchArtist(name);
+	}
+	
+	@Override
+	public ComposerBean searchComposer(String name) {
+		return adminDao.searchComposer(name);
+	}
 }
