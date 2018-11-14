@@ -131,7 +131,7 @@ public class MCAMS {
 			
 			switch(choice){
 			case 1: createAC(userId,password); break;
-			case 2: editAC(); break;	
+			case 2: editAC(userId); break;	
 			case 3: songAssociation(); break;
 			case 4: searchAC(userId); break;
 			case 5: attempt=3; return;
@@ -194,7 +194,7 @@ public class MCAMS {
 
 
 
-	private static void editAC() {
+	private static void editAC(int userId) {
 		int choice;
 		
 		clearScreen();
