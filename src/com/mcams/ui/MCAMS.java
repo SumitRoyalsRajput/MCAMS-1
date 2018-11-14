@@ -195,6 +195,44 @@ public class MCAMS {
 
 
 	private static void editAC() {
+		int choice;
+		
+		clearScreen();
+		
+		while(true) {
+			System.out.println();
+			System.out.println("1. Edit Artist");
+			System.out.println("2. Edit Composer");
+			System.out.println("3. Back");
+			System.out.println("4. Exit");
+			System.out.print("Enter choice: ");
+			choice = scan.nextInt();
+			scan.nextLine();
+		
+			if(choice==1) {
+				editArtist(userId);
+				break;
+			}
+			else if(choice==2) {
+				editComposer(userId);
+				break;
+			}
+			else if(choice==3) {clearScreen(); return;}
+			else if(choice==4) exit();
+			else System.out.println("\nPlease enter valid choice!\n");
+		}
+	}
+	
+	////Edit composer details
+	
+	private static void editComposer(int userId) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
+	////edit artist details
+	private static void editArtist(int userId) {
 		// TODO Auto-generated method stub
 		
 	}
