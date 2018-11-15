@@ -226,15 +226,218 @@ public class MCAMS {
 	////Edit composer details
 	
 	private static void editComposer(int userId) {
-		// TODO Auto-generated method stub
-		
+		while(true){
+			clearScreen();
+			String name, caeIpi;
+			LocalDate bDate, dDate;
+			char[] mSocietyId;
+			while(true){
+				System.out.println("\nEDIT COMPOSER");
+				System.out.print("Enter name: ");
+				name = scan.nextLine();
+				boolean isValid = valService.validateName(name);
+				if(isValid) break;
+				else System.out.println("\nPlease enter valid name! (MinChar:3, MaxChar:50)\n");
+			}
+			
+			ComposerBean getBean = adminService.searchComposer(name);
+			
+			if(getBean != null){
+				System.out.println("******Existing Information*******");
+				System.out.println("Composer's Id: "+getBean.getId());
+				System.out.println("Composer's Name: "+getBean.getName());
+				System.out.println("Composer's Born Date: "+getBean.getBornDate());
+				System.out.println("Composer's Died Date: "+getBean.getDiedDate());
+				System.out.println("Composer's CAE IPI Number: "+getBean.getCaeipiNumber());
+				System.out.println("Composer's Music Society Id: "+getBean.getMusicSocietyId().toString());
+				System.out.println("Created By: "+getBean.getCreatedBy());
+				System.out.println("Created On: "+getBean.getCreatedOn());
+				System.out.println("Updated By: "+getBean.getUpdatedBy());
+				System.out.println("Updated On: "+getBean.getUpdatedOn());
+				
+				System.out.println("Enter Details you want to update");
+					while(true){
+						System.out.print("Enter name: ");
+						name = scan.nextLine();
+						boolean isValid = valService.validateName(name);
+						if(isValid) break;
+						else System.out.println("\nPlease enter valid name! (MinChar:3, MaxChar:50)\n");
+					}
+				
+					while(true){
+						System.out.print("Enter Born Date (dd/mm/yyyy) (If not available then type 'NA'): ");
+						String input = scan.nextLine();
+					
+						if(!input.equalsIgnoreCase("NA")){
+							bDate = valService.validateDate(input);
+							if(bDate!=null) break;
+							else System.out.println("\nPlease enter valid date! (dd/mm/yyyy)\n");
+						}
+						else{
+							bDate=null;
+							break;
+						}
+					}
+				
+					while(true){
+						System.out.print("Enter Died Date (mm/dd/yyyy) (If not available then type 'NA'): ");
+						String input = scan.nextLine();
+					
+						if(!input.equalsIgnoreCase("NA")){
+							dDate = valService.validateDate(input);
+							if(bDate.isAfter(dDate)){
+								System.out.println("\nDied date should be after Born date");
+								continue;
+							}
+							if(dDate!=null) break;
+							else System.out.println("\nPlease enter valid date! (dd/mm/yyyy)\n");
+						}
+						else{
+							dDate=null;
+							break;
+						}
+					}
+					
+					while(true){
+						System.out.print("Enter CAE IPI number: ");
+						caeIpi = scan.nextLine();
+						boolean isValid = valService.validateCaeIpi(caeIpi);
+						if(isValid) break;
+						else System.out.println("\nPlease enter valid name! (MinChar:3, MaxChar:50)\n");
+					}
+				
+					while(true) {
+						System.out.print("Enter music society ID: ");
+						mSocietyId = scan.nextLine().toCharArray();
+						boolean isValid = valService.validateMSocietyId(mSocietyId);
+						if(isValid) break;
+						else System.out.println("\nPlease enter valid input!\n");
+					}
+				
+					compBean.setName(name);
+					compBean.setBornDate(bDate);
+					compBean.setDiedDate(dDate);
+					compBean.setCaeipiNumber(caeIpi);
+					compBean.setMusicSocietyId(mSocietyId);
+					compBean.setUpdatedBy(userId);
+				
+					getBean = adminService.updateComposer(compBean);
+					if(getBean!=null) System.out.println("Composer's information updated successfully.");
+					else System.out.println("Problem while updating composer's information.");
+			}
+			else
+				System.out.println("No Record Found");
+			
+			boolean isContinue;
+			while(true) {
+				System.out.println("Do you want to continue? (y/n): ");
+				String choice = scan.nextLine();
+			
+				if(choice.equalsIgnoreCase("y")) {clearScreen(); isContinue=true; break;}
+				else if(choice.equalsIgnoreCase("n")) {clearScreen(); isContinue=false; break;}
+				else System.out.println("\nPlease enter valid choice!");
+			}
+			
+			if(!isContinue) break;
+		}
 	}
 
 	
 	////edit artist details
 	private static void editArtist(int userId) {
-		// TODO Auto-generated method stub
-		
+		while(true){
+			clearScreen();
+			String name;
+			LocalDate bDate, dDate;
+			while(true){
+				System.out.println("\nEDIT ARTIST");
+				System.out.print("Enter name: ");
+				name = scan.nextLine();
+				boolean isValid = valService.validateName(name);
+				if(isValid) break;
+				else System.out.println("\nPlease enter valid name! (MinChar:3, MaxChar:50)\n");
+			}
+			
+			ArtistBean getBean = adminService.searchArtist(name);
+			
+			if(getBean != null){
+				System.out.println("******Existing Information*******");
+				System.out.println("Artist's Id: "+getBean.getId());
+				System.out.println("Artist Name: "+getBean.getName());
+				System.out.println("Artist's Born Date: "+getBean.getBornDate());
+				System.out.println("Artist's Died Date: "+getBean.getDiedDate());
+				System.out.println("Created By: "+getBean.getCreatedBy());
+				System.out.println("Created On: "+getBean.getCreatedOn());
+				System.out.println("Updated By: "+getBean.getUpdatedBy());
+				System.out.println("Updated On: "+getBean.getUpdatedOn());
+				
+				System.out.println("Enter Details you want to update");
+					while(true){
+						System.out.print("Enter name: ");
+						name = scan.nextLine();
+						boolean isValid = valService.validateName(name);
+						if(isValid) break;
+						else System.out.println("\nPlease enter valid name! (MinChar:3, MaxChar:50)\n");
+					}
+				
+					while(true){
+						System.out.print("Enter Born Date (dd/mm/yyyy) (If not available then type 'NA'): ");
+						String input = scan.nextLine();
+					
+						if(!input.equalsIgnoreCase("NA")){
+							bDate = valService.validateDate(input);
+							if(bDate!=null) break;
+							else System.out.println("\nPlease enter valid date! (dd/mm/yyyy)\n");
+						}
+						else{
+							bDate=null;
+							break;
+						}
+					}
+				
+					while(true){
+						System.out.print("Enter Died Date (mm/dd/yyyy) (If not available then type 'NA'): ");
+						String input = scan.nextLine();
+					
+						if(!input.equalsIgnoreCase("NA")){
+							dDate = valService.validateDate(input);
+							if(bDate.isAfter(dDate)){
+								System.out.println("\nDied date should be after Born date");
+								continue;
+							}
+							if(dDate!=null) break;
+							else System.out.println("\nPlease enter valid date! (dd/mm/yyyy)\n");
+						}
+						else{
+							dDate=null;
+							break;
+						}
+					}
+				
+					artBean.setName(name);
+					artBean.setBornDate(bDate);
+					artBean.setDiedDate(dDate);
+					artBean.setUpdatedBy(userId);
+				
+					getBean = adminService.updateArtist(artBean);
+					if(getBean!=null) System.out.println("Artist's information updated successfully.");
+					else System.out.println("Problem while updating artist's information.");
+			}
+			else
+				System.out.println("No Record Found");
+			
+			boolean isContinue;
+			while(true) {
+				System.out.println("Do you want to continue? (y/n): ");
+				String choice = scan.nextLine();
+			
+				if(choice.equalsIgnoreCase("y")) {clearScreen(); isContinue=true; break;}
+				else if(choice.equalsIgnoreCase("n")) {clearScreen(); isContinue=false; break;}
+				else System.out.println("\nPlease enter valid choice!");
+			}
+			
+			if(!isContinue) break;
+		}		
 	}
 
 	private static void searchAC() {
@@ -508,6 +711,7 @@ public class MCAMS {
 			compBean.setCaeipiNumber(caeIpi);
 			compBean.setMusicSocietyId(mSocietyId);
 			compBean.setUpdatedBy(userId);
+			compBean.setCreatedBy(userId);
 			
 			int genId = adminService.createComposer(compBean,false);
 			
