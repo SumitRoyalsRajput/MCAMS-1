@@ -434,17 +434,18 @@ public class MCAMS {
 						}
 					}
 				
+					artBean.setId(getBean.getId());
 					artBean.setName(name);
 					artBean.setBornDate(bDate);
 					artBean.setDiedDate(dDate);
 					artBean.setUpdatedBy(userId);
 				
 					getBean = adminService.updateArtist(artBean);
-					if(getBean!=null) System.out.println("Artist's information updated successfully.");
-					else System.out.println("Problem while updating artist's information.");
+					if(getBean!=null) System.out.println("Artist's information updated successfully with id: "+getBean.getId());
+					else System.out.println("\nProblem occured while updating artist's information...\n");
 			}
 			else
-				System.out.println("No Record Found");
+				System.out.println("No Record Found!");
 			
 			boolean isContinue;
 			while(true) {
@@ -495,23 +496,21 @@ public class MCAMS {
 			
 			ComposerBean getBean = adminService.searchComposer(name);
 			String bornDate="", diedDate="";
+			
 			if(getBean != null){
-				if(getBean.getDiedDate() == null && getBean.getBornDate() == null) {
-					bornDate = "NA";
-					diedDate = "NA";
-				}
-				else if(getBean.getDiedDate() == null) diedDate = "NA";
-				else if(getBean.getBornDate() == null) bornDate = "NA";
-				else {
-					bornDate = getBean.getBornDate().toString();
-					diedDate = getBean.getDiedDate().toString();
-				}
+				String mSocietyId = new String(getBean.getMusicSocietyId());
+				
+				if(getBean.getBornDate() == null) bornDate="NA";
+				else bornDate = getBean.getBornDate().toString();
+				if(getBean.getDiedDate() == null) diedDate="NA";
+				else diedDate = getBean.getBornDate().toString();
+				
 				System.out.println("Composer's Id: "+getBean.getId());
 				System.out.println("Composer's Name: "+getBean.getName());
 				System.out.println("Composer's Born Date: "+bornDate);
 				System.out.println("Composer's Died Date: "+diedDate);
 				System.out.println("Composer's CAE IPI Number: "+getBean.getCaeipiNumber());
-				System.out.println("Composer's Music Society Id: "+getBean.getMusicSocietyId().toString());
+				System.out.println("Composer's Music Society Id: "+mSocietyId);
 				System.out.println("Created By: "+getBean.getCreatedBy());
 				System.out.println("Created On: "+getBean.getCreatedOn());
 				System.out.println("Updated By: "+getBean.getUpdatedBy());
@@ -548,18 +547,14 @@ public class MCAMS {
 			}
 			
 			ArtistBean getBean = adminService.searchArtist(name);
-			String bornDate = "", diedDate="";
+			String bornDate,diedDate;
 			if(getBean != null){
-				if(getBean.getDiedDate() == null && getBean.getBornDate() == null) {
-					bornDate = "NA";
-					diedDate = "NA";
-				}
-				else if(getBean.getDiedDate() == null) diedDate = "NA";
-				else if(getBean.getBornDate() == null) bornDate = "NA";
-				else {
-					bornDate = getBean.getBornDate().toString();
-					diedDate = getBean.getDiedDate().toString();
-				}
+				
+				if(getBean.getBornDate() == null) bornDate="NA";
+				else bornDate = getBean.getBornDate().toString();
+				if(getBean.getDiedDate() == null) diedDate="NA";
+				else diedDate = getBean.getBornDate().toString();
+				
 				System.out.println("Artist's Id: "+getBean.getId());
 				System.out.println("Artist Name: "+getBean.getName());
 				System.out.println("Artist's Born Date: "+bornDate);
