@@ -40,4 +40,14 @@ public class AdminService implements IAdminService {
 	public ComposerBean searchComposer(String name) {
 		return adminDao.searchComposer(name);
 	}
+
+	@Override
+	public ArtistBean updateArtist(ArtistBean artBean) {
+		return adminDao.updateArtist(artBean);
+	}
+
+	@Override
+	public ComposerBean updateComposer(ComposerBean compBean) {
+		return adminDao.updateComposer(compBean);
+	}
 }

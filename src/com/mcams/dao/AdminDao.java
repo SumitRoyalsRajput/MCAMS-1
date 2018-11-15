@@ -20,23 +20,8 @@ public class AdminDao implements IAdminDao {
 	@Override
 	public ArtistBean createArtist(ArtistBean artBean, boolean isUpdate) {
 		if(isUpdate) {
-			String bDate, dDate;
-			
-			if(artBean.getBornDate()==null) bDate=null;
-			else bDate="TO_DATE('"+artBean.getBornDate()+"','yyyy/mm/dd')";
-			
-			if(artBean.getDiedDate()==null) dDate=null;
-			else dDate="TO_DATE('"+artBean.getDiedDate()+"','yyyy/mm/dd')";
-			
-			sql = "UPDATE Artist_Master SET Artist_BornDate="+bDate+",Artist_DiedDate="+dDate+",Updated_by="+artBean.getUpdatedBy()+",Updated_On=SYSDATE,Artist_DeletedFlag=0 WHERE Artist_Id="+artBean.getId();
-			try {
-				st.executeUpdate(sql);
-				return artBean;
-			} catch (SQLException e) {
-				System.out.println(e.getMessage());
-				return artBean;
-			}
-			
+			artBean = updateArtist(artBean);
+			return artBean;
 		}
 		
 		else {
@@ -186,7 +171,7 @@ public class AdminDao implements IAdminDao {
 	public ArtistBean searchArtist(String name) {
 		ResultSet rs;
 		ArtistBean ab = new ArtistBean();
-		sql="SELECT * from Artist_Master WHERE Artist_Name="+name+" AND Artist_DeletedFlag=0";
+		sql="SELECT * from Artist_Master WHERE Artist_Name='"+name+"' AND Artist_DeletedFlag=0";
 		try {
 			st = conn.createStatement();
 			rs = st.executeQuery(sql);
@@ -213,7 +198,7 @@ public class AdminDao implements IAdminDao {
 	public ComposerBean searchComposer(String name) {
 		ResultSet rs;
 		ComposerBean cb = new ComposerBean();
-		sql="SELECT * from Composer_Master WHERE Composer_Name="+name+" AND Composer_DeletedFlag=0";
+		sql="SELECT * from Composer_Master WHERE Composer_Name='"+name+"' AND Composer_DeletedFlag=0";
 		try {
 			st = conn.createStatement();
 			rs = st.executeQuery(sql);
@@ -235,6 +220,46 @@ public class AdminDao implements IAdminDao {
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 			return null;
+		}
+	}
+
+	@Override
+	public ArtistBean updateArtist(ArtistBean artBean) {
+		String bDate, dDate;
+		
+		if(artBean.getBornDate()==null) bDate=null;
+		else bDate="TO_DATE('"+artBean.getBornDate()+"','yyyy/mm/dd')";
+		
+		if(artBean.getDiedDate()==null) dDate=null;
+		else dDate="TO_DATE('"+artBean.getDiedDate()+"','yyyy/mm/dd')";
+		
+		sql = "UPDATE Artist_Master SET Artist_Name="+artBean.getName()+"Artist_BornDate="+bDate+",Artist_DiedDate="+dDate+",Updated_by="+artBean.getUpdatedBy()+",Updated_On=SYSDATE,Artist_DeletedFlag=0 WHERE Artist_Id="+artBean.getId();
+		try {
+			st.executeUpdate(sql);
+			return artBean;
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+			return artBean;
+		}
+	}
+	
+	@Override
+	public ComposerBean updateComposer(ComposerBean compBean) {
+		String bDate, dDate;
+		
+		if(compBean.getBornDate()==null) bDate=null;
+		else bDate="TO_DATE('"+compBean.getBornDate()+"','yyyy/mm/dd')";
+		
+		if(compBean.getDiedDate()==null) dDate=null;
+		else dDate="TO_DATE('"+compBean.getDiedDate()+"','yyyy/mm/dd')";
+		
+		sql = "UPDATE Composer_Master SET Composer_Name="+compBean.getName()+"Composer_BornDate="+bDate+",Composer_DiedDate="+dDate+",Composer_Caeipinumber="+compBean.getCaeipiNumber()+",Composer_Musicsocietyid"+compBean.getMusicSocietyId().toString()+",Updated_by="+compBean.getUpdatedBy()+",Updated_On=SYSDATE,Composer_DeletedFlag=0 WHERE Composer_Id="+compBean.getId();
+		try {
+			st.executeUpdate(sql);
+			return compBean;
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+			return compBean;
 		}
 	}
 

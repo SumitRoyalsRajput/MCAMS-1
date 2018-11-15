@@ -20,4 +20,8 @@ public interface IAdminService {
 
 	ComposerBean searchComposer(String name);
 
+	ArtistBean updateArtist(ArtistBean artBean);
+
+	ComposerBean updateComposer(ComposerBean compBean);
+
 }
