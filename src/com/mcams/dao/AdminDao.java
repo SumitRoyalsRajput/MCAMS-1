@@ -179,8 +179,10 @@ public class AdminDao implements IAdminDao {
 			else {
 				ab.setId(rs.getInt(1));
 				ab.setName(rs.getString(2));
-				ab.setBornDate(rs.getDate(3).toLocalDate());
-				ab.setDiedDate(rs.getDate(4).toLocalDate());
+				if(rs.getDate(3) == null) ab.setBornDate(null);
+				else ab.setBornDate(rs.getDate(3).toLocalDate());
+				if(rs.getDate(4) == null) ab.setDiedDate(null);
+				else ab.setDiedDate(rs.getDate(4).toLocalDate());
 				ab.setCreatedBy(rs.getInt(5));
 				ab.setCreatedOn(rs.getDate(6).toLocalDate());
 				ab.setUpdatedBy(rs.getInt(7));
@@ -206,8 +208,10 @@ public class AdminDao implements IAdminDao {
 			else {
 				cb.setId(rs.getInt(1));
 				cb.setName(rs.getString(2));
-				cb.setBornDate(rs.getDate(3).toLocalDate());
-				cb.setDiedDate(rs.getDate(4).toLocalDate());
+				if(rs.getDate(3) == null) cb.setBornDate(null);
+				else cb.setBornDate(rs.getDate(3).toLocalDate());
+				if(rs.getDate(4) == null) cb.setDiedDate(null);
+				else cb.setDiedDate(rs.getDate(4).toLocalDate());
 				cb.setCaeipiNumber(rs.getString(5));
 				cb.setMusicSocietyId(rs.getString(6).toCharArray());
 				cb.setCreatedBy(rs.getInt(7));
