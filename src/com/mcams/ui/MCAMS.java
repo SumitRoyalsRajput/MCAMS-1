@@ -503,7 +503,7 @@ public class MCAMS {
 				if(getBean.getBornDate() == null) bornDate="NA";
 				else bornDate = getBean.getBornDate().toString();
 				if(getBean.getDiedDate() == null) diedDate="NA";
-				else diedDate = getBean.getBornDate().toString();
+				else diedDate = getBean.getDiedDate().toString();
 				
 				System.out.println("Composer's Id: "+getBean.getId());
 				System.out.println("Composer's Name: "+getBean.getName());
@@ -553,7 +553,7 @@ public class MCAMS {
 				if(getBean.getBornDate() == null) bornDate="NA";
 				else bornDate = getBean.getBornDate().toString();
 				if(getBean.getDiedDate() == null) diedDate="NA";
-				else diedDate = getBean.getBornDate().toString();
+				else diedDate = getBean.getDiedDate().toString();
 				
 				System.out.println("Artist's Id: "+getBean.getId());
 				System.out.println("Artist Name: "+getBean.getName());

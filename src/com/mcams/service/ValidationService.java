@@ -20,7 +20,7 @@ public class ValidationService implements IValidationService {
 	
 	@Override
 	public boolean validateName(String name) {
-		if(name.matches("[a-zA-Z\\s]{3,50}")) return true;
+		if(name.matches("[a-zA-Z\\s\\.]{3,50}")) return true;
 		else return false;
 	}
 	
