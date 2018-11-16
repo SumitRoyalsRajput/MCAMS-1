@@ -106,7 +106,7 @@ public class MCAMS {
 			
 			clearScreen();
 			
-			if(userId.equals("100000"))
+			if(userId.equals("100000") || userId.equals("100001"))
 				adminConsole(authBean.getUserId(),authBean.getPassword());
 			else
 				clientConsole(authBean.getUserId(),authBean.getPassword());
@@ -121,10 +121,12 @@ public class MCAMS {
 			
 			System.out.println("1. Create Artist/Composer");
 			System.out.println("2. Edit Artist/Composer");
-			System.out.println("3. Associate song(s) to Artist/Composer");
-			System.out.println("4. Search Artist/Composer");
-			System.out.println("5. LOGOUT");
-			System.out.println("6. EXIT");
+			System.out.println("3. Delete Artist/Composer");
+			System.out.println("4. Search Artist/Composer song(s)");
+			System.out.println("5. Associate song(s) to Artist/Composer");
+			System.out.println("6. Search Artist/Composer");
+			System.out.println("7. LOGOUT");
+			System.out.println("8. EXIT");
 			System.out.print("Enter your choice: ");
 			
 			choice = valService.validateChoice(scan.nextLine());
@@ -132,15 +134,27 @@ public class MCAMS {
 			switch(choice){
 			case 1: createAC(userId,password); break;
 			case 2: editAC(userId); break;	
-			case 3: songAssociation(userId); break;
-			case 4: searchAC(); break;
-			case 5: attempt=3; return;
-			case 6: exit();
+			case 3: deleteAC(userId); break;
+			case 4: searchSong(userId); break;
+			case 5: songAssociate(userId); break;
+			case 6: searchAC(); break;
+			case 7: attempt=3; return;
+			case 8: exit();
 			default: System.out.println("Please enter valid choice!\n");
 			}
 		}
 	}
 	
+	private static void deleteAC(int userId) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private static void songAssociate(int userId) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	private static void clientConsole(int userId, String password) {
 		int choice;
 		
@@ -154,7 +168,7 @@ public class MCAMS {
 			choice = valService.validateChoice(scan.nextLine());
 			
 			switch(choice) {
-			case 1: songAssociation(userId); break;
+			case 1: searchSong(userId); break;
 			case 2: return;
 			case 3: exit();
 			default: System.out.println("\nPlease enter valid choice!\n");
@@ -244,22 +258,18 @@ public class MCAMS {
 			
 			if(getBean != null){
 				System.out.println("******Existing Information*******");
-				if(getBean.getDiedDate() == null && getBean.getBornDate() == null) {
-					bornDate = "NA";
-					diedDate = "NA";
-				}
-				else if(getBean.getDiedDate() == null) diedDate = "NA";
-				else if(getBean.getBornDate() == null) bornDate = "NA";
-				else {
-					bornDate = getBean.getBornDate().toString();
-					diedDate = getBean.getDiedDate().toString();
-				}
+				
+				if(getBean.getBornDate() == null) bornDate="NA";
+				else bornDate = getBean.getBornDate().toString();
+				if(getBean.getDiedDate() == null) diedDate="NA";
+				else diedDate = getBean.getDiedDate().toString();
+				
 				System.out.println("Composer's Id: "+getBean.getId());
 				System.out.println("Composer's Name: "+getBean.getName());
 				System.out.println("Composer's Born Date: "+bornDate);
 				System.out.println("Composer's Died Date: "+diedDate);
 				System.out.println("Composer's CAE IPI Number: "+getBean.getCaeipiNumber());
-				System.out.println("Composer's Music Society Id: "+getBean.getMusicSocietyId().toString());
+				System.out.println("Composer's Music Society Id: "+new String(getBean.getMusicSocietyId()));
 				System.out.println("Created By: "+getBean.getCreatedBy());
 				System.out.println("Created On: "+getBean.getCreatedOn());
 				System.out.println("Updated By: "+getBean.getUpdatedBy());
@@ -324,6 +334,7 @@ public class MCAMS {
 						else System.out.println("\nPlease enter valid input!\n");
 					}
 				
+					compBean.setId(getBean.getId());
 					compBean.setName(name);
 					compBean.setBornDate(bDate);
 					compBean.setDiedDate(dDate);
@@ -372,16 +383,12 @@ public class MCAMS {
 			
 			if(getBean != null){
 				System.out.println("******Existing Information*******");
-				if(getBean.getDiedDate() == null && getBean.getBornDate() == null) {
-					bornDate = "NA";
-					diedDate = "NA";
-				}
-				else if(getBean.getDiedDate() == null) diedDate = "NA";
-				else if(getBean.getBornDate() == null) bornDate = "NA";
-				else {
-					bornDate = getBean.getBornDate().toString();
-					diedDate = getBean.getDiedDate().toString();
-				}
+				
+				if(getBean.getBornDate() == null) bornDate="NA";
+				else bornDate = getBean.getBornDate().toString();
+				if(getBean.getDiedDate() == null) diedDate="NA";
+				else diedDate = getBean.getDiedDate().toString();
+				
 				System.out.println("Artist's Id: "+getBean.getId());
 				System.out.println("Artist Name: "+getBean.getName());
 				System.out.println("Artist's Born Date: "+bornDate);
@@ -581,7 +588,7 @@ public class MCAMS {
 		}
 	}
 
-	private static void songAssociation(int userId) {
+	private static void searchSong(int userId) {
 		clearScreen();
 		String choice;
 		while(true) {
@@ -851,7 +858,7 @@ public class MCAMS {
 				int i=1;
 				for (SongBean songBean : songList) {
 					if(userId==100000)
-						System.out.println(songBean.getId()+" "+songBean.getName()+" "+songBean.getDuration()+" "+songBean.getCreatedBy()+" "+songBean.getCreatedOn()+" "+songBean.getUpdatedBy()+" "+songBean.getUpdatedOn());
+						System.out.println(songBean.getId()+" "+songBean.getName()+" "+songBean.getDuration().getMinute()+":"+songBean.getDuration().getSecond()+" "+songBean.getCreatedBy()+" "+songBean.getCreatedOn()+" "+songBean.getUpdatedBy()+" "+songBean.getUpdatedOn());
 					else {
 						System.out.println(i+") "+songBean.getName()+" "+songBean.getDuration());
 						i++;

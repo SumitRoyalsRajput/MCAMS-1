@@ -39,7 +39,7 @@ public class ValidationService implements IValidationService {
 	
 	@Override
 	public boolean validateCaeIpi(String caeIpi) {
-		if(caeIpi.matches("[a-zA-Z\\s]{3,50}")) return true;
+		if(caeIpi.matches("[a-zA-Z0-9\\s]{3,10}")) return true;
 		else return false;
 	}
 

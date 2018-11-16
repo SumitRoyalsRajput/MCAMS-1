@@ -140,14 +140,14 @@ public class AdminDao implements IAdminDao {
 		SongBean sb = new SongBean();
 		ArrayList<SongBean> songList = new ArrayList<SongBean>();
 		
-		sql="SELECT Composer_Id from Composer_Master WHERE Composer_Name="+name+" AND Composer_DeletedFlag=0";
+		sql="SELECT Composer_Id from Composer_Master WHERE Composer_Name='"+name+"' AND Composer_DeletedFlag=0";
 		try {
 			st = conn.createStatement();
 			rs = st.executeQuery(sql);
 			if(!rs.next()) return null;
 			else {
 				sql =  "SELECT * from Song_Master INNER JOIN Composer_Song_Assoc ON Composer_Song_Assoc.Song_Id=Song_Master.Song_Id WHERE "
-						+ "Composer_Song_Assoc.Composer_Id IN (select Composer_Id FROM Composer_Master WHERE Composer_Name="+name+") AND Song_Master.Song_DeletedFlag=0";
+						+ "Composer_Song_Assoc.Composer_Id IN (select Composer_Id FROM Composer_Master WHERE Composer_Name='"+name+"') AND Song_Master.Song_DeletedFlag=0";
 				rs = st.executeQuery(sql);
 				while(rs.next()){
 					sb.setId(rs.getInt(1));
@@ -237,7 +237,7 @@ public class AdminDao implements IAdminDao {
 		if(artBean.getDiedDate()==null) dDate=null;
 		else dDate="TO_DATE('"+artBean.getDiedDate()+"','yyyy/mm/dd')";
 		
-		sql = "UPDATE Artist_Master SET Artist_Name="+artBean.getName()+"Artist_BornDate="+bDate+",Artist_DiedDate="+dDate+",Updated_by="+artBean.getUpdatedBy()+",Updated_On=SYSDATE,Artist_DeletedFlag=0 WHERE Artist_Id="+artBean.getId();
+		sql = "UPDATE Artist_Master SET Artist_Name='"+artBean.getName()+"',Artist_BornDate="+bDate+",Artist_DiedDate="+dDate+",Updated_by="+artBean.getUpdatedBy()+",Updated_On=SYSDATE,Artist_DeletedFlag=0 WHERE Artist_Id="+artBean.getId();
 		try {
 			st.executeUpdate(sql);
 			return artBean;
@@ -257,7 +257,7 @@ public class AdminDao implements IAdminDao {
 		if(compBean.getDiedDate()==null) dDate=null;
 		else dDate="TO_DATE('"+compBean.getDiedDate()+"','yyyy/mm/dd')";
 		
-		sql = "UPDATE Composer_Master SET Composer_Name="+compBean.getName()+"Composer_BornDate="+bDate+",Composer_DiedDate="+dDate+",Composer_Caeipinumber="+compBean.getCaeipiNumber()+",Composer_Musicsocietyid"+compBean.getMusicSocietyId().toString()+",Updated_by="+compBean.getUpdatedBy()+",Updated_On=SYSDATE,Composer_DeletedFlag=0 WHERE Composer_Id="+compBean.getId();
+		sql = "UPDATE Composer_Master SET Composer_Name='"+compBean.getName()+"',Composer_BornDate="+bDate+",Composer_DiedDate="+dDate+",Composer_Caeipinumber='"+compBean.getCaeipiNumber()+"',Composer_Musicsocietyid='"+new String(compBean.getMusicSocietyId())+"',Updated_by="+compBean.getUpdatedBy()+",Updated_On=SYSDATE,Composer_DeletedFlag=0 WHERE Composer_Id="+compBean.getId();
 		try {
 			st.executeUpdate(sql);
 			return compBean;
