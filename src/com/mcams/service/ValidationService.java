@@ -1,6 +1,7 @@
 package com.mcams.service;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 public class ValidationService implements IValidationService {
@@ -49,6 +50,17 @@ public class ValidationService implements IValidationService {
 			return true;
 		}
 		else return false;
+	}
+
+	public LocalTime validateDuration(String nextLine) {
+		LocalDate ld;
+		if(nextLine.matches("[0-5]{1}[0-9]{1}:[0-5]{1,2}[0-9]{1}")) {
+			System.out.println("correct");
+		}
+		else {
+			System.out.println("Incorrect");
+		}
+		return null;
 	}
 	
 }

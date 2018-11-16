@@ -2,6 +2,7 @@ package com.mcams.ui;
 
 import java.io.Console;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -146,12 +147,85 @@ public class MCAMS {
 	}
 	
 	private static void deleteAC(int userId) {
+		int choice;
+		clearScreen();
+		while(true) {
+			System.out.println("1. Delete Artist");
+			System.out.println("2. Delete Composer");
+			System.out.println("3. Back");
+			System.out.println("4. Exit");
+			System.out.print("Enter your choice: ");
+		
+			choice = valService.validateChoice(scan.nextLine());
+			
+			switch(choice) {
+			case 1: deleteArtist(userId); break;
+			case 2: deleteComposer(userId); break;
+			case 3: return;
+			case 4: exit();
+			default: System.out.println("\nPlease enter valid choice!\n");
+			}
+		}
+	}
+
+	private static void deleteComposer(int userId) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private static void deleteArtist(int userId) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	private static void songAssociate(int userId) {
+		int choice;
+		clearScreen();
+		while(true) {
+			System.out.println("1. Associate songs to Artist");
+			System.out.println("2. Associate songs to Composer");
+			System.out.println("3. Back");
+			System.out.println("4. Exit");
+			System.out.print("Enter your choice: ");
+		
+			choice = valService.validateChoice(scan.nextLine());
+			
+			switch(choice) {
+			case 1: artSongAssoc(userId); break;
+			case 2: compSongAssoc(userId); break;
+			case 3: return;
+			case 4: exit();
+			default: System.out.println("\nPlease enter valid choice!\n");
+			}
+		}
+	}
+
+	private static void compSongAssoc(int userId) {
 		// TODO Auto-generated method stub
+		
+	}
+
+	private static void artSongAssoc(int userId) {
+		clearScreen();
+		System.out.println("ARTIST SONG ASSOCIATION\n");
+		
+		String songName;
+		LocalTime duration;
+		
+		/*while(true){
+			System.out.print("Song name: ");
+			songName = scan.nextLine();
+			boolean isValid = valService.validateName(songName);
+			if(isValid) break;
+			else System.out.println("\nPlease enter valid name! (MinChar:3, MaxChar:50)\n");
+		}*/
+		
+		while(true){
+			System.out.print("Duration: ");
+			duration = valService.validateDuration(scan.nextLine());
+			if(duration==null) break;
+			else System.out.println("\nPlease enter valid Duration! (mm:ss)\n");
+		}
 		
 	}
 
