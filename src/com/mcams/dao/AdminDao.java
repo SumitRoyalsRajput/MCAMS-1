@@ -49,8 +49,13 @@ public class AdminDao implements IAdminDao {
 					}
 				}
 				
+				String bDate, dDate;
+				if(artBean.getBornDate() == null) bDate=null;
+				else bDate="TO_DATE('"+artBean.getBornDate()+"','yyyy/mm/dd')";
+				if(artBean.getDiedDate() == null) dDate=null;
+				else dDate="TO_DATE('"+artBean.getDiedDate()+"','yyyy/mm/dd')";
 				sql = "INSERT INTO Artist_Master (Artist_Id,Artist_Name,Artist_BornDate,Artist_DiedDate,Created_By,Created_On,Updated_By,Updated_On,Artist_DeletedFlag) "
-						+ "VALUES(artistSeq.NEXTVAL,'"+artBean.getName()+"',TO_DATE('"+artBean.getBornDate()+"','yyyy/mm/dd'),TO_DATE('"+artBean.getDiedDate()+"','yyyy/mm/dd'),"+artBean.getCreatedBy()+",SYSDATE,"+artBean.getUpdatedBy()+",SYSDATE,0)";
+						+ "VALUES(artistSeq.NEXTVAL,'"+artBean.getName()+"',"+bDate+","+dDate+","+artBean.getCreatedBy()+",SYSDATE,"+artBean.getUpdatedBy()+",SYSDATE,0)";
 				st.executeUpdate(sql);
 				rs = st.executeQuery("SELECT artistSeq.CURRVAL FROM DUAL");
 				rs.next();
@@ -69,8 +74,7 @@ public class AdminDao implements IAdminDao {
 	@Override
 	public int createComposer(ComposerBean compBean, boolean isUpdate) {
 		if(isUpdate) {
-			sql = "INSERT INTO Composer_Master (Composer_Id,Composer_Name,Composer_CaeipiNumber,Composer_MusicSocietyID,Updated_By,Updated_On) "
-					+ "VALUES("+compBean.getId()+",'"+compBean.getName()+"','"+compBean.getCaeipiNumber()+"','"+compBean.getMusicSocietyId().toString()+"',"+compBean.getUpdatedBy()+",SYSDATE)";
+			compBean = updateComposer(compBean);
 			return compBean.getId();
 		}
 		
@@ -86,8 +90,13 @@ public class AdminDao implements IAdminDao {
 						return -((rs.getInt(1))+100000);
 				}
 				
-				sql = "INSERT INTO Composer_Master (Composer_Id,Composer_Name,Composer_CaeipiNumber,Composer_MusicSocietyID,Updated_By,Updated_On) "
-						+ "VALUES(composerSeq.NEXTVAL,'"+compBean.getName()+"','"+compBean.getCaeipiNumber()+"','"+compBean.getMusicSocietyId().toString()+"',"+compBean.getUpdatedBy()+",SYSDATE)";
+				String bDate, dDate;
+				if(compBean.getBornDate() == null) bDate=null;
+				else bDate="TO_DATE('"+compBean.getBornDate()+"','yyyy/mm/dd')";
+				if(compBean.getDiedDate() == null) dDate=null;
+				else dDate="TO_DATE('"+compBean.getDiedDate()+"','yyyy/mm/dd')";
+				sql = "INSERT INTO Composer_Master (Composer_Id,Composer_Name,Composer_BornDate,Composer_DiedDate,Composer_CaeipiNumber,Composer_MusicSocietyID,Updated_By,Updated_On) "
+						+ "VALUES(composerSeq.NEXTVAL,'"+compBean.getName()+"',"+bDate+","+dDate+","+compBean.getCaeipiNumber()+"','"+compBean.getMusicSocietyId().toString()+"',"+compBean.getUpdatedBy()+",SYSDATE)";
 				st.executeUpdate(sql);
 				rs = st.executeQuery("SELECT composerSeq.CURRVAL FROM DUAL");
 				return rs.getInt(1);
@@ -107,14 +116,14 @@ public class AdminDao implements IAdminDao {
 		SongBean sb = new SongBean();
 		ArrayList<SongBean> songList = new ArrayList<SongBean>();
 		
-		sql="SELECT Artist_Id from Artist_Master WHERE Artist_Name="+name+" AND Artist_DeletedFlag=0";
+		sql="SELECT Artist_Id from Artist_Master WHERE Artist_Name='"+name+"' AND Artist_DeletedFlag=0";
 		try {
 			st = conn.createStatement();
 			rs = st.executeQuery(sql);
 			if(!rs.next()) return null;
 			else {
 				sql =  "SELECT * from Song_Master INNER JOIN Artist_Song_Assoc ON Artist_Song_Assoc.Song_Id=Song_Master.Song_Id WHERE "
-						+ "Artist_Song_Assoc.Artist_Id IN (select Artist_Id FROM Artist_Master WHERE Artist_Name="+name+") AND Song_Master.Song_DeletedFlag=0";
+						+ "Artist_Song_Assoc.Artist_Id IN (select Artist_Id FROM Artist_Master WHERE Artist_Name='"+name+"') AND Song_Master.Song_DeletedFlag=0";
 				rs = st.executeQuery(sql);
 				while(rs.next()){
 					sb.setId(rs.getInt(1));
