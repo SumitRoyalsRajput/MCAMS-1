@@ -212,13 +212,13 @@ public class MCAMS {
 		String songName;
 		LocalTime duration;
 		
-		/*while(true){
+		while(true){
 			System.out.print("Song name: ");
 			songName = scan.nextLine();
 			boolean isValid = valService.validateName(songName);
 			if(isValid) break;
 			else System.out.println("\nPlease enter valid name! (MinChar:3, MaxChar:50)\n");
-		}*/
+		}
 		
 		while(true){
 			System.out.print("Duration: ");
