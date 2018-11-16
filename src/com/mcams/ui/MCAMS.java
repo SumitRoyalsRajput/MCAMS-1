@@ -201,32 +201,119 @@ public class MCAMS {
 	}
 
 	private static void compSongAssoc(int userId) {
-		// TODO Auto-generated method stub
-		
+		while(true) {
+			clearScreen();
+			System.out.println("COMPOSER SONG ASSOCIATION\n");
+			
+			String songName, compName;
+			LocalTime duration;
+			
+			while(true){
+				System.out.print("Song name: ");
+				songName = scan.nextLine();
+				boolean isValid = valService.validateName(songName);
+				if(isValid) break;
+				else System.out.println("\nPlease enter valid name! (MinChar:3, MaxChar:50)\n");
+			}
+			
+			while(true){
+				System.out.print("Duration: ");
+				duration = valService.validateDuration(scan.nextLine());
+				if(duration==null) break;
+				else System.out.println("\nPlease enter valid Duration! (mm:ss)\n");
+			}
+			
+			while(true){
+				while(true){
+					System.out.print("Enter Composer Name you want to associate with: ");
+					compName = scan.nextLine();
+					boolean isValid = valService.validateName(compName);
+					if(isValid) break;
+					else System.out.println("\nPlease enter valid name! (MinChar:3, MaxChar:50)\n");
+				}
+				songBean.setName(songName);
+				songBean.setDuration(duration);
+				songBean.setCreatedBy(userId);
+				songBean.setUpdatedBy(userId);
+				
+				compBean = adminService.searchComposer(compName);
+				if(compBean != null) {
+					SongBean getSongBean = adminService.assocComposer(songBean, compBean);
+					System.out.println("Song associated to "+compBean.getName()+" with song Id: "+getSongBean.getId());
+					break;
+				}
+				else System.out.println("Composer not present. Please try with others");
+			}
+			boolean isContinue;
+			while(true) {
+				System.out.println("Do you want to continue? (y/n): ");
+				String choice = scan.nextLine();
+			
+				if(choice.equalsIgnoreCase("y")) {clearScreen(); isContinue=true; break;}
+				else if(choice.equalsIgnoreCase("n")) {clearScreen(); isContinue=false; break;}
+				else System.out.println("\nPlease enter valid choice!");
+			}
+			
+			if(!isContinue) break;
+		}
 	}
 
 	private static void artSongAssoc(int userId) {
-		clearScreen();
-		System.out.println("ARTIST SONG ASSOCIATION\n");
-		
-		String songName;
-		LocalTime duration;
-		
-		while(true){
-			System.out.print("Song name: ");
-			songName = scan.nextLine();
-			boolean isValid = valService.validateName(songName);
-			if(isValid) break;
-			else System.out.println("\nPlease enter valid name! (MinChar:3, MaxChar:50)\n");
+		while(true) {
+			clearScreen();
+			System.out.println("ARTIST SONG ASSOCIATION\n");
+			
+			String songName, artName;
+			LocalTime duration;
+			
+			while(true){
+				System.out.print("Song name: ");
+				songName = scan.nextLine();
+				boolean isValid = valService.validateName(songName);
+				if(isValid) break;
+				else System.out.println("\nPlease enter valid name! (MinChar:3, MaxChar:50)\n");
+			}
+			
+			while(true){
+				System.out.print("Duration: ");
+				duration = valService.validateDuration(scan.nextLine());
+				if(duration==null) break;
+				else System.out.println("\nPlease enter valid Duration! (mm:ss)\n");
+			}
+			
+			while(true){
+				while(true){
+					System.out.print("Enter Artist Name you want to associate with: ");
+					artName = scan.nextLine();
+					boolean isValid = valService.validateName(artName);
+					if(isValid) break;
+					else System.out.println("\nPlease enter valid name! (MinChar:3, MaxChar:50)\n");
+				}
+				songBean.setName(songName);
+				songBean.setDuration(duration);
+				songBean.setCreatedBy(userId);
+				songBean.setUpdatedBy(userId);
+				
+				artBean = adminService.searchArtist(artName);
+				if(artBean != null) {
+					SongBean getSongBean = adminService.assocArtist(songBean, artBean);
+					System.out.println("Song associated to "+artBean.getName()+" with song Id: "+getSongBean.getId());
+					break;
+				}
+				else System.out.println("Artist not present. Please try others");
+			}
+			boolean isContinue;
+			while(true) {
+				System.out.println("Do you want to continue? (y/n): ");
+				String choice = scan.nextLine();
+			
+				if(choice.equalsIgnoreCase("y")) {clearScreen(); isContinue=true; break;}
+				else if(choice.equalsIgnoreCase("n")) {clearScreen(); isContinue=false; break;}
+				else System.out.println("\nPlease enter valid choice!");
+			}
+			
+			if(!isContinue) break;
 		}
-		
-		while(true){
-			System.out.print("Duration: ");
-			duration = valService.validateDuration(scan.nextLine());
-			if(duration==null) break;
-			else System.out.println("\nPlease enter valid Duration! (mm:ss)\n");
-		}
-		
 	}
 
 	private static void clientConsole(int userId, String password) {

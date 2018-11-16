@@ -276,4 +276,16 @@ public class AdminDao implements IAdminDao {
 		}
 	}
 
+	@Override
+	public SongBean assocArtist(SongBean songBean, ArtistBean artBean) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public SongBean assocComposer(SongBean songBean, ComposerBean compBean) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

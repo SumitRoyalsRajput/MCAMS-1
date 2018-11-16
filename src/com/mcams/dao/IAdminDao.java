@@ -24,4 +24,8 @@ public interface IAdminDao {
 
 	ComposerBean updateComposer(ComposerBean compBean);
 
+	SongBean assocArtist(SongBean songBean, ArtistBean artBean);
+	
+	SongBean assocComposer(SongBean songBean, ComposerBean compBean);
+
 }
