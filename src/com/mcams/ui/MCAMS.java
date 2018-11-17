@@ -219,11 +219,16 @@ public class MCAMS {
 			while(true){
 				System.out.print("Duration: ");
 				duration = valService.validateDuration(scan.nextLine());
-				if(duration==null) break;
+				if(duration!=null) break;
 				else System.out.println("\nPlease enter valid Duration! (mm:ss)\n");
 			}
+			songBean.setName(songName);
+			songBean.setDuration(duration);
+			songBean.setCreatedBy(userId);
+			songBean.setUpdatedBy(userId);
 			
 			while(true){
+				
 				while(true){
 					System.out.print("Enter Composer Name you want to associate with: ");
 					compName = scan.nextLine();
@@ -231,18 +236,43 @@ public class MCAMS {
 					if(isValid) break;
 					else System.out.println("\nPlease enter valid name! (MinChar:3, MaxChar:50)\n");
 				}
-				songBean.setName(songName);
-				songBean.setDuration(duration);
-				songBean.setCreatedBy(userId);
-				songBean.setUpdatedBy(userId);
 				
 				compBean = adminService.searchComposer(compName);
+				
 				if(compBean != null) {
-					SongBean getSongBean = adminService.assocComposer(songBean, compBean);
-					System.out.println("Song associated to "+compBean.getName()+" with song Id: "+getSongBean.getId());
-					break;
+					SongBean getSongBean = adminService.assocComposer(songBean, compBean, userId, false);
+					if(getSongBean.getId()<0) {
+						if(getSongBean.getId()>-400000) {
+							songBean.setId(Math.abs(getSongBean.getId()));
+							while(true){
+								System.out.print("\nThis song already present.\nDo you want to update it with this information? (y/n): ");
+								String persist = scan.nextLine();
+								
+								if(persist.equalsIgnoreCase("y")){						
+									songBean = adminService.assocComposer(songBean,compBean,userId,true);
+									System.out.println("\nSong record submitted with id: "+songBean.getId()+"\n");
+									break;
+								}
+								else if(persist.equalsIgnoreCase("n")) {
+									System.out.println("\nOperation Cancelled!\n");
+									break;
+								}
+								else System.out.println("\nPlease enter valid input! (Y or N)\n");
+							}
+						}
+						else {
+							songBean.setId(Math.abs(getSongBean.getId()+100000));
+							songBean = adminService.assocComposer(songBean,compBean,userId,true);
+							System.out.println("\nSong record submitted with id: "+songBean.getId()+"\n");
+							break;
+						}
+					}
+					else {
+						System.out.println("\nSong record submitted with id: "+songBean.getId()+"\n");
+						break;
+					}
 				}
-				else System.out.println("Composer not present. Please try with others");
+				else System.out.println("Composer not present. Please try others");
 			}
 			boolean isContinue;
 			while(true) {
@@ -277,11 +307,16 @@ public class MCAMS {
 			while(true){
 				System.out.print("Duration: ");
 				duration = valService.validateDuration(scan.nextLine());
-				if(duration==null) break;
+				if(duration!=null) break;
 				else System.out.println("\nPlease enter valid Duration! (mm:ss)\n");
 			}
+			songBean.setName(songName);
+			songBean.setDuration(duration);
+			songBean.setCreatedBy(userId);
+			songBean.setUpdatedBy(userId);
 			
 			while(true){
+				
 				while(true){
 					System.out.print("Enter Artist Name you want to associate with: ");
 					artName = scan.nextLine();
@@ -289,16 +324,41 @@ public class MCAMS {
 					if(isValid) break;
 					else System.out.println("\nPlease enter valid name! (MinChar:3, MaxChar:50)\n");
 				}
-				songBean.setName(songName);
-				songBean.setDuration(duration);
-				songBean.setCreatedBy(userId);
-				songBean.setUpdatedBy(userId);
 				
 				artBean = adminService.searchArtist(artName);
+				
 				if(artBean != null) {
-					SongBean getSongBean = adminService.assocArtist(songBean, artBean);
-					System.out.println("Song associated to "+artBean.getName()+" with song Id: "+getSongBean.getId());
-					break;
+					SongBean getSongBean = adminService.assocArtist(songBean, artBean, userId, false);
+					if(getSongBean.getId()<0) {
+						if(getSongBean.getId()>-400000) {
+							songBean.setId(Math.abs(getSongBean.getId()));
+							while(true){
+								System.out.print("\nThis song already present.\nDo you want to update it with this information? (y/n): ");
+								String persist = scan.nextLine();
+								
+								if(persist.equalsIgnoreCase("y")){						
+									songBean = adminService.assocArtist(songBean,artBean,userId,true);
+									System.out.println("\nSong record submitted with id: "+songBean.getId()+"\n");
+									break;
+								}
+								else if(persist.equalsIgnoreCase("n")) {
+									System.out.println("\nOperation Cancelled!\n");
+									break;
+								}
+								else System.out.println("\nPlease enter valid input! (Y or N)\n");
+							}
+						}
+						else {
+							songBean.setId(Math.abs(getSongBean.getId()+100000));
+							songBean = adminService.assocArtist(songBean,artBean,userId,true);
+							System.out.println("\nSong record submitted with id: "+songBean.getId()+"\n");
+							break;
+						}
+					}
+					else {
+						System.out.println("\nSong record submitted with id: "+songBean.getId()+"\n");
+						break;
+					}
 				}
 				else System.out.println("Artist not present. Please try others");
 			}
@@ -849,7 +909,6 @@ public class MCAMS {
 						}
 						else System.out.println("\nPlease enter valid input! (Y or N)\n");
 					}
-				// TODO 2sec thread sleep
 				}
 				else {
 					artBean.setId(Math.abs(getBean.getId()+100000));

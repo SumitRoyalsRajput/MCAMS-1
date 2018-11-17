@@ -52,12 +52,12 @@ public class AdminService implements IAdminService {
 	}
 
 	@Override
-	public SongBean assocArtist(SongBean songBean, ArtistBean artBean) {
-		return adminDao.assocArtist(songBean, artBean);
+	public SongBean assocArtist(SongBean songBean, ArtistBean artBean, int userId, boolean isUpdate) {
+		return adminDao.assocArtist(songBean, artBean, userId, isUpdate);
 	}
 
 	@Override
-	public SongBean assocComposer(SongBean songBean, ComposerBean compBean) {
-		return adminDao.assocComposer(songBean, compBean);
+	public SongBean assocComposer(SongBean songBean, ComposerBean compBean, int userId, boolean isUpdate) {
+		return adminDao.assocComposer(songBean, compBean, userId, isUpdate);
 	}
 }

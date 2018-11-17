@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
+
 public class ValidationService implements IValidationService {
 	
 	@Override
@@ -52,15 +53,12 @@ public class ValidationService implements IValidationService {
 		else return false;
 	}
 
-	public LocalTime validateDuration(String nextLine) {
-		LocalDate ld;
-		if(nextLine.matches("[0-5]{1}[0-9]{1}:[0-5]{1}[0-9]{1}")) {
-			System.out.println("correct");
+	public LocalTime validateDuration(String time) {
+		if(time.matches("[0-5]{1}[0-9]{1}:[0-5]{1}[0-9]{1}")) {
+			time = "12:"+time;
+			return LocalTime.parse(time,DateTimeFormatter.ofPattern("H:m:s"));
 		}
-		else {
-			System.out.println("Incorrect");
-		}
-		return null;
+		else return null;		
 	}
 	
 }

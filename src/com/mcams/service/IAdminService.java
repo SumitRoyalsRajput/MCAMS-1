@@ -24,8 +24,8 @@ public interface IAdminService {
 
 	ComposerBean updateComposer(ComposerBean compBean);
 
-	SongBean assocArtist(SongBean songBean, ArtistBean artBean);
+	SongBean assocArtist(SongBean songBean, ArtistBean artBean, int userId, boolean isUpdate);
 	
-	SongBean assocComposer(SongBean songBean, ComposerBean compBean);
+	SongBean assocComposer(SongBean songBean, ComposerBean compBean, int userId, boolean isUpdate);
 
 }

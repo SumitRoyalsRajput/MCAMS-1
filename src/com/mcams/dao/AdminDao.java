@@ -277,15 +277,122 @@ public class AdminDao implements IAdminDao {
 	}
 
 	@Override
-	public SongBean assocArtist(SongBean songBean, ArtistBean artBean) {
-		// TODO Auto-generated method stub
-		return null;
+	public SongBean assocArtist(SongBean songBean, ArtistBean artBean, int userId, boolean isUpdate) {
+		SongBean getSong = new SongBean();
+		if(isUpdate) {
+			getSong = updateSong(songBean,userId);
+			return getSong;
+		}
+		
+		else {
+			sql = "SELECT * FROM Song_Master WHERE Song_Name='"+songBean.getName()+"'";
+			try {
+				st = conn.createStatement();
+				ResultSet rs = st.executeQuery(sql);
+				
+				if(rs.next()) {
+					getSong.setId(rs.getInt(1));
+					getSong.setName(rs.getString(2));
+					getSong.setDuration(rs.getTime(3).toLocalTime());
+					getSong.setCreatedBy(rs.getInt(4));
+					getSong.setCreatedOn(rs.getDate(5).toLocalDate());
+					getSong.setUpdatedBy(rs.getInt(6));
+					getSong.setUpdatedOn(rs.getDate(7).toLocalDate());
+					getSong.setDeletedFlag(rs.getInt(8));
+					
+					if(getSong.getDeletedFlag()==0) {
+						getSong.setId(-(rs.getInt(1)));
+						return getSong;
+					}
+					else {
+						getSong.setId(-((rs.getInt(1))+100000));
+						return getSong;
+					}
+				}
+				
+				sql = "INSERT INTO Song_Master VALUES (songSeq.NEXTVAL,'"+songBean.getName()+"','01-JAN-2000 1:"+songBean.getDuration().getMinute()+":"+songBean.getDuration().getSecond()+"',"+userId+",SYSDATE,"+userId+",SYSDATE,0)";
+				st.executeUpdate(sql);
+				rs = st.executeQuery("SELECT songSeq.CURRVAL FROM DUAL");
+				rs.next();
+				songBean.setId(rs.getInt(1));
+				
+				sql = "INSERT INTO Artist_Song_Assoc VALUES("+songBean.getId()+","+artBean.getId()+","+userId+",SYSDATE,"+userId+",SYSDATE)";
+				st.executeUpdate(sql);
+				return songBean;
+				
+			} catch (SQLException e) {
+				System.out.println(e.getMessage());
+				songBean.setId(0);
+				return songBean;
+			}
+			
+		}
+		
+	}
+
+	private SongBean updateSong(SongBean songBean, int userId) {
+		sql = "UPDATE Song_Master SET Song_Name='"+songBean.getName()+"',Song_Duration='01-JAN-2000 12:"+songBean.getDuration().getMinute()+":"+songBean.getDuration().getSecond()+"',Created_By="+songBean.getCreatedBy()+",Created_On=TO_DATE('"+songBean.getCreatedOn()+"','yyyy-mm-dd'),Updated_By="+songBean.getUpdatedBy()+",Updated_On=SYSDATE,Song_DeletedFlag=0 WHERE Song_Id="+songBean.getId();
+		try {
+			st.executeUpdate(sql);
+			return songBean;
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+			songBean.setId(0);
+			return songBean;
+		}
 	}
 
 	@Override
-	public SongBean assocComposer(SongBean songBean, ComposerBean compBean) {
-		// TODO Auto-generated method stub
-		return null;
+	public SongBean assocComposer(SongBean songBean, ComposerBean compBean, int userId, boolean isUpdate) {
+		SongBean getSong = new SongBean();
+		if(isUpdate) {
+			getSong = updateSong(songBean,userId);
+			return getSong;
+		}
+		
+		else {
+			sql = "SELECT * FROM Song_Master WHERE Song_Name='"+songBean.getName()+"'";
+			try {
+				st = conn.createStatement();
+				ResultSet rs = st.executeQuery(sql);
+				
+				if(rs.next()) {
+					getSong.setId(rs.getInt(1));
+					getSong.setName(rs.getString(2));
+					getSong.setDuration(rs.getTime(3).toLocalTime());
+					getSong.setCreatedBy(rs.getInt(4));
+					getSong.setCreatedOn(rs.getDate(5).toLocalDate());
+					getSong.setUpdatedBy(rs.getInt(6));
+					getSong.setUpdatedOn(rs.getDate(7).toLocalDate());
+					getSong.setDeletedFlag(rs.getInt(8));
+					
+					if(getSong.getDeletedFlag()==0) {
+						getSong.setId(-(rs.getInt(1)));
+						return getSong;
+					}
+					else {
+						getSong.setId(-((rs.getInt(1))+100000));
+						return getSong;
+					}
+				}
+				
+				sql = "INSERT INTO Song_Master VALUES (songSeq.NEXTVAL,'"+songBean.getName()+"','01-JAN-2000 1:"+songBean.getDuration().getMinute()+":"+songBean.getDuration().getSecond()+"',"+userId+",SYSDATE,"+userId+",SYSDATE,0)";
+				st.executeUpdate(sql);
+				rs = st.executeQuery("SELECT songSeq.CURRVAL FROM DUAL");
+				rs.next();
+				songBean.setId(rs.getInt(1));
+				
+				sql = "INSERT INTO Composer_Song_Assoc VALUES("+songBean.getId()+","+compBean.getId()+","+userId+",SYSDATE,"+userId+",SYSDATE)";
+				st.executeUpdate(sql);
+				return songBean;
+				
+			} catch (SQLException e) {
+				System.out.println(e.getMessage());
+				songBean.setId(0);
+				return songBean;
+			}
+			
+		}
 	}
 
 }
