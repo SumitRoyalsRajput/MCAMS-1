@@ -403,7 +403,7 @@ public class AdminDao implements IAdminDao {
 			rs = st.executeQuery(sql);
 			
 			while(rs.next()) {
-				sql = "UPDATE Song_Master SET Song_DeletedFlag=1 WHERE Song_Id="+rs.getInt(1);
+				sql = "UPDATE Song_Master SET Updated_By="+userId+", Updated_On=SYSDATE, Song_DeletedFlag=1 WHERE Song_Id="+rs.getInt(1);
 				st.executeUpdate(sql);
 			}
 			
@@ -428,7 +428,7 @@ public class AdminDao implements IAdminDao {
 			rs = st.executeQuery(sql);
 			
 			while(rs.next()) {
-				sql = "UPDATE Song_Master SET Song_DeletedFlag=1 WHERE Song_Id="+rs.getInt(1);
+				sql = "UPDATE Song_Master SET Updated_By="+userId+", Updated_On=SYSDATE, Song_DeletedFlag=1 WHERE Song_Id="+rs.getInt(1);
 				st.executeUpdate(sql);
 			}
 			
@@ -442,6 +442,45 @@ public class AdminDao implements IAdminDao {
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			return 1;
+		}
+	}
+
+	@Override
+	public int deleteSong(int songId, int userId) {
+		try {
+			sql = "DELETE FROM Artist_Song_Assoc WHERE Song_Id="+songId;
+			st.executeUpdate(sql);
+			
+			sql = "DELETE FROM Composer_Song_Assoc WHERE Song_Id="+songId;
+			st.executeUpdate(sql);
+			
+			sql = "UPDATE Song_Master SET Updated_By="+userId+", Updated_On=SYSDATE, Song_DeletedFlag=1 WHERE Song_Id="+songId;
+			st.executeUpdate(sql);
+			
+			return 0;
+		}catch(Exception e){
+			System.out.println(e.getMessage());
+			return 1;
+		}
+	}
+
+	public SongBean searchSong(String name) {
+		SongBean sb = new SongBean();
+		ResultSet rs;
+		try {
+			sql = "SELECT Song_Id, Song_Name, Song_Duration FROM Song_Master WHERE Song_Name='"+name+"' AND Song_DeletedFlag=0";
+			rs = st.executeQuery(sql);
+			if(!rs.next()) return null;
+			else {
+				sb.setId(rs.getInt(1));
+				sb.setName(rs.getString(2));
+				sb.setDuration(rs.getTime(3).toLocalTime());
+				return sb;
+			}	
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println(e.getMessage());
+			return null;
 		}
 	}
 

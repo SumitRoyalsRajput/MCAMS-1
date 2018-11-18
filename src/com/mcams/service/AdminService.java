@@ -71,4 +71,13 @@ public class AdminService implements IAdminService {
 		
 		return adminDao.deleteComposer(composerId, userId);
 	}
+
+	@Override
+	public int deleteSong(int songId, int userId) {
+		return adminDao.deleteSong(songId,userId);
+	}
+
+	public SongBean searchSong(String name) {
+		return adminDao.searchSong(name);
+	}
 }

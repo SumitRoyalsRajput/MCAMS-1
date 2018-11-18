@@ -121,31 +121,64 @@ public class MCAMS {
 		while(true){
 			
 			System.out.println("1. Create Artist/Composer");
-			System.out.println("2. Edit Artist/Composer");
-			System.out.println("3. Delete Artist/Composer");
-			System.out.println("4. Search Artist/Composer song(s)");
-			System.out.println("5. Associate song(s) to Artist/Composer");
-			System.out.println("6. Search Artist/Composer");
-			System.out.println("7. LOGOUT");
-			System.out.println("8. EXIT");
+			System.out.println("2. Search Artist/Composer");
+			System.out.println("3. Edit Artist/Composer");
+			System.out.println("4. Delete Artist/Composer");
+			System.out.println("5. Associate song to Artist/Composer");
+			System.out.println("6. Search Artist/Composer song(s)");
+			System.out.println("7. Delete Song");
+			System.out.println("8. LOGOUT");
+			System.out.println("9. EXIT");
 			System.out.print("Enter your choice: ");
 			
 			choice = valService.validateChoice(scan.nextLine());
 			
 			switch(choice){
 			case 1: createAC(userId,password); break;
-			case 2: editAC(userId); break;	
-			case 3: deleteAC(userId); break;
-			case 4: searchSong(userId); break;
+			case 2: searchAC(); break;
+			case 3: editAC(userId); break;	
+			case 4: deleteAC(userId); break;
 			case 5: songAssociate(userId); break;
-			case 6: searchAC(); break;
-			case 7: attempt=3; return;
-			case 8: exit();
+			case 6: searchSong(userId); break;
+			case 7: deleteSong(userId); break;
+			case 8: attempt=3; return;
+			case 9: exit();
 			default: System.out.println("Please enter valid choice!\n");
 			}
 		}
 	}
 	
+	private static void deleteSong(int userId) {
+		clearScreen();
+		String name;
+		while(true){
+			System.out.println("\nDELETE SONG");
+			System.out.print("Enter name: ");
+			name = scan.nextLine();
+			boolean isValid = valService.validateName(name);
+			if(isValid) break;
+			else System.out.println("\nPlease enter valid name! (MinChar:3, MaxChar:50)\n");
+		}
+		
+		SongBean getSong = adminService.searchSong(name);
+		
+		if(getSong!=null) {
+			int result = adminService.deleteSong(getSong.getId(), userId);
+			if(result==0) System.out.println("Song Deleted Successfully!");
+			else System.out.println("Something went wrong! Please try again later...");
+		}
+		else System.out.println("\nNo Record Found!\n");
+		
+		while(true) {
+			System.out.print("\nDo you want to continue? (y/n): ");
+			String choice = scan.nextLine();
+			
+			if(choice.equalsIgnoreCase("y")) break;
+			else if(choice.equalsIgnoreCase("n")) return;
+			else System.out.println("\nPlease enter valid choice!\n");
+		}
+	}
+
 	private static void deleteAC(int userId) {
 		int choice;
 		clearScreen();

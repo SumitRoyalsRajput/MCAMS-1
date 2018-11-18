@@ -32,4 +32,6 @@ public interface IAdminService {
 
 	int deleteComposer(int composerId, int userId);
 
+	int deleteSong(int songId, int userId);
+
 }

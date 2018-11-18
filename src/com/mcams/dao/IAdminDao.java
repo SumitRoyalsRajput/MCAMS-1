@@ -30,4 +30,6 @@ public interface IAdminDao {
 
 	int deleteArtist(int artistId, int userId);
 
+	int deleteSong(int songId, int userId);
+
 }
