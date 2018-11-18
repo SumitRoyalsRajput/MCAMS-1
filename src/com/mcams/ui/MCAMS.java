@@ -169,13 +169,107 @@ public class MCAMS {
 	}
 
 	private static void deleteComposer(int userId) {
-		// TODO Auto-generated method stub
+		while(true) {
+			clearScreen();
+			String name;
+			while(true){
+				System.out.println("\nDELETE COMPOSER");
+				System.out.print("Enter name: ");
+				name = scan.nextLine();
+				boolean isValid = valService.validateName(name);
+				if(isValid) break;
+				else System.out.println("\nPlease enter valid name! (MinChar:3, MaxChar:50)\n");
+			}
+			
+			ComposerBean getBean = adminService.searchComposer(name);
+			String bornDate,diedDate, caeIpi, mSocietyId;
+			if(getBean != null){
+				
+				if(getBean.getBornDate() == null) bornDate="NA";
+				else bornDate = getBean.getBornDate().toString();
+				if(getBean.getDiedDate() == null) diedDate="NA";
+				else diedDate = getBean.getDiedDate().toString();
+				
+				caeIpi = getBean.getCaeipiNumber();
+				mSocietyId = new String(getBean.getMusicSocietyId());
+				
+				System.out.println("Composer's Born Date: "+bornDate);
+				System.out.println("Composer's Died Date: "+diedDate);
+				System.out.println("Composer'c CAE IPI No.: "+caeIpi);
+				System.out.println("Composer's Music Society ID: "+mSocietyId);
+				
+				System.out.print("\nDo you want to delete this composer? (y/n): ");
+				String choice = scan.nextLine();
+
+				if(choice.equalsIgnoreCase("y")) {
+//					System.out.println("Please wait...");
+					int result = adminService.deleteComposer(getBean.getId(),userId);
+					if(result==0) System.out.println("Composer Deleted successfully!");
+					else System.out.println("\nSomething went wrong! Please try again later...");
+				}
+				else return;			
+			}
+			else System.out.println("\nNo Record Found!\n");
+			
+			while(true) {
+				System.out.print("\nDo you want to continue? (y/n): ");
+				String choice = scan.nextLine();
+				
+				if(choice.equalsIgnoreCase("y")) break;
+				else if(choice.equalsIgnoreCase("n")) return;
+				else System.out.println("\nPlease enter valid choice!\n");
+			}
+		}
 		
 	}
 
 	private static void deleteArtist(int userId) {
-		// TODO Auto-generated method stub
-		
+		while(true) {
+			clearScreen();
+			String name;
+			while(true){
+				System.out.println("\nDELETE ARTIST");
+				System.out.print("Enter name: ");
+				name = scan.nextLine();
+				boolean isValid = valService.validateName(name);
+				if(isValid) break;
+				else System.out.println("\nPlease enter valid name! (MinChar:3, MaxChar:50)\n");
+			}
+			
+			ArtistBean getBean = adminService.searchArtist(name);
+			String bornDate,diedDate;
+			if(getBean != null){
+				
+				if(getBean.getBornDate() == null) bornDate="NA";
+				else bornDate = getBean.getBornDate().toString();
+				if(getBean.getDiedDate() == null) diedDate="NA";
+				else diedDate = getBean.getDiedDate().toString();
+				
+				System.out.println("Artist's Born Date: "+bornDate);
+				System.out.println("Artist's Died Date: "+diedDate);
+				
+				System.out.print("\nDo you want to delete this artist? (y/n): ");
+				String choice = scan.nextLine();
+				
+				if(choice.equalsIgnoreCase("y")) {
+//					System.out.println("Please wait...");
+					int result = adminService.deleteArtist(getBean.getId(),userId);
+					if(result==0) System.out.println("Artist Deleted successfully!");
+					else System.out.println("\nSomething went wrong! Please try again later...");
+				}
+				else return;			
+			}
+			else System.out.println("No Record Found");
+			
+			while(true) {
+				System.out.print("\nDo you want to continue? (y/n): ");
+				String choice = scan.nextLine();
+				
+				if(choice.equalsIgnoreCase("y")) break;
+				else if(choice.equalsIgnoreCase("n")) return;
+				else System.out.println("\nPlease enter valid choice!\n");
+			}
+		}
 	}
 
 	private static void songAssociate(int userId) {

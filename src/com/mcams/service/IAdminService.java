@@ -28,4 +28,8 @@ public interface IAdminService {
 	
 	SongBean assocComposer(SongBean songBean, ComposerBean compBean, int userId, boolean isUpdate);
 
+	int deleteArtist(int artistId, int userId);
+
+	int deleteComposer(int composerId, int userId);
+
 }

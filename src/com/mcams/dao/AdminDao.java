@@ -394,5 +394,55 @@ public class AdminDao implements IAdminDao {
 			
 		}
 	}
+	
+	@Override
+	public int deleteArtist(int artistId, int userId) {
+		ResultSet rs;
+		try {
+			sql = "SELECT Song_Id FROM Artist_Song_Assoc WHERE Artist_Id="+artistId+" AND Song_Id NOT IN (SELECT Song_Id FROM Composer_Song_Assoc)";
+			rs = st.executeQuery(sql);
+			
+			while(rs.next()) {
+				sql = "UPDATE Song_Master SET Song_DeletedFlag=1 WHERE Song_Id="+rs.getInt(1);
+				st.executeUpdate(sql);
+			}
+			
+			sql = "DELETE FROM Artist_Song_Assoc WHERE Artist_Id="+artistId;
+			st.executeUpdate(sql);
+			
+			sql = "UPDATE Artist_Master SET Artist_DeletedFlag=1 WHERE Artist_Id="+artistId;
+			st.executeUpdate(sql);
+			
+			return 0;
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return 1;
+		}
+		
+	}
+
+	public int deleteComposer(int composerId, int userId) {
+		ResultSet rs;
+		try {
+			sql = "SELECT Song_Id FROM Composer_Song_Assoc WHERE Composer_Id="+composerId+" AND Song_Id NOT IN (SELECT Song_Id FROM Artist_Song_Assoc)";
+			rs = st.executeQuery(sql);
+			
+			while(rs.next()) {
+				sql = "UPDATE Song_Master SET Song_DeletedFlag=1 WHERE Song_Id="+rs.getInt(1);
+				st.executeUpdate(sql);
+			}
+			
+			sql = "DELETE FROM Composer_Song_Assoc WHERE Composer_Id="+composerId;
+			st.executeUpdate(sql);
+			
+			sql = "UPDATE Composer_Master SET Composer_DeletedFlag=1 WHERE Composer_Id="+composerId;
+			st.executeUpdate(sql);
+			
+			return 0;
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return 1;
+		}
+	}
 
 }

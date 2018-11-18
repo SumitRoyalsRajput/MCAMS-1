@@ -60,4 +60,15 @@ public class AdminService implements IAdminService {
 	public SongBean assocComposer(SongBean songBean, ComposerBean compBean, int userId, boolean isUpdate) {
 		return adminDao.assocComposer(songBean, compBean, userId, isUpdate);
 	}
+
+	@Override
+	public int deleteArtist(int artistId, int userId) {
+		return adminDao.deleteArtist(artistId, userId);
+	}
+
+	@Override
+	public int deleteComposer(int composerId, int userId) {
+		
+		return adminDao.deleteComposer(composerId, userId);
+	}
 }

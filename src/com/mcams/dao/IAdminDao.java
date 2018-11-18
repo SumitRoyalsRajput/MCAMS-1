@@ -28,4 +28,6 @@ public interface IAdminDao {
 	
 	SongBean assocComposer(SongBean songBean, ComposerBean compBean, int userId, boolean isUpdate);
 
+	int deleteArtist(int artistId, int userId);
+
 }
