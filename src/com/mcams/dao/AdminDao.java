@@ -72,13 +72,22 @@ public class AdminDao implements IAdminDao {
 	}
 
 	@Override
-	public int createComposer(ComposerBean compBean, boolean isUpdate) {
+	public int createComposer(ComposerBean compBean, boolean isUpdate, String mSocietyName) {
 		if(isUpdate) {
+			if(mSocietyName!=null) {
+				try {
+					sql = "INSERT INTO MusicSociety_Master VALUES('"+new String(compBean.getMusicSocietyId())+"','"+mSocietyName+"')";
+					st = conn.createStatement();
+					st.executeUpdate(sql);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
 			compBean = updateComposer(compBean);
 			return compBean.getId();
 		}
 		
-		else {
+		else {			
 			sql = "SELECT Composer_Id, Composer_DeletedFlag FROM Composer_Master WHERE Composer_Name='"+compBean.getName()+"'";
 			try {
 				st = conn.createStatement();
@@ -90,15 +99,26 @@ public class AdminDao implements IAdminDao {
 						return -((rs.getInt(1))+100000);
 				}
 				
+				if(mSocietyName!=null) {
+					try {
+						sql = "INSERT INTO MusicSociety_Master VALUES('"+new String(compBean.getMusicSocietyId())+"','"+mSocietyName+"')";
+						st = conn.createStatement();
+						st.executeUpdate(sql);
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				}
+				
 				String bDate, dDate;
 				if(compBean.getBornDate() == null) bDate=null;
 				else bDate="TO_DATE('"+compBean.getBornDate()+"','yyyy/mm/dd')";
 				if(compBean.getDiedDate() == null) dDate=null;
 				else dDate="TO_DATE('"+compBean.getDiedDate()+"','yyyy/mm/dd')";
 				sql = "INSERT INTO Composer_Master (Composer_Id,Composer_Name,Composer_BornDate,Composer_DiedDate,Composer_CaeipiNumber,Composer_MusicSocietyID,Updated_By,Updated_On) "
-						+ "VALUES(composerSeq.NEXTVAL,'"+compBean.getName()+"',"+bDate+","+dDate+","+compBean.getCaeipiNumber()+"','"+compBean.getMusicSocietyId().toString()+"',"+compBean.getUpdatedBy()+",SYSDATE)";
+						+ "VALUES(composerSeq.NEXTVAL,'"+compBean.getName()+"',"+bDate+","+dDate+",'"+compBean.getCaeipiNumber()+"','"+new String(compBean.getMusicSocietyId())+"',"+compBean.getUpdatedBy()+",SYSDATE)";
 				st.executeUpdate(sql);
 				rs = st.executeQuery("SELECT composerSeq.CURRVAL FROM DUAL");
+				rs.next();
 				return rs.getInt(1);
 				
 			} catch (SQLException e) {
@@ -483,6 +503,19 @@ public class AdminDao implements IAdminDao {
 			e.printStackTrace();
 			System.out.println(e.getMessage());
 			return null;
+		}
+	}
+
+	public boolean checkMSociety(String mSocietyId) {
+		try {
+			sql = "SELECT * FROM MusicSociety_Master WHERE Composer_MusicSocietyId='"+mSocietyId+"'";
+			st = conn.createStatement();
+			ResultSet rs = st.executeQuery(sql);
+			if(rs.next()) return true;
+			else return false;
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+			return false;
 		}
 	}
 

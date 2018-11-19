@@ -53,17 +53,19 @@ public class MCAMS {
 				else System.out.println("\nPlease enter valid choice!\n");
 			}
 			
+			
+				
+			while(true) {
+				System.out.print("\nEnter user id: ");
+				userId = scan.nextLine();
+				boolean isValid = valService.validateUserId(userId);
+				if(isValid) break;
+				else System.out.println("\nInvalid ID! (ID should be 6 digit number)\n");
+			}
+				
 			while(true){
 				if(attempt<3)
 					System.out.println("Login (attempt remaining: "+attempt+")");
-				
-				while(true) {
-					System.out.print("\nEnter user id: ");
-					userId = scan.nextLine();
-					boolean isValid = valService.validateUserId(userId);
-					if(isValid) break;
-					else System.out.println("\nInvalid ID! (ID should be 6 digit number)\n");
-				}
 				
 				System.out.print("Enter password: ");
 				if(console != null)
@@ -292,7 +294,7 @@ public class MCAMS {
 				}
 				else return;			
 			}
-			else System.out.println("No Record Found");
+			else System.out.println("No Record Found!");
 			
 			while(true) {
 				System.out.print("\nDo you want to continue? (y/n): ");
@@ -539,14 +541,8 @@ public class MCAMS {
 			choice = scan.nextInt();
 			scan.nextLine();
 		
-			if(choice==1) {
-				createArtist(userId);
-				break;
-			}
-			else if(choice==2) {
-				createComposer(userId);
-				break;
-			}
+			if(choice==1) createArtist(userId);
+			else if(choice==2) createComposer(userId);
 			else if(choice==3) {clearScreen(); return;}
 			else if(choice==4) exit();
 			else System.out.println("\nPlease enter valid choice!\n");
@@ -693,7 +689,7 @@ public class MCAMS {
 			
 			boolean isContinue;
 			while(true) {
-				System.out.println("Do you want to continue? (y/n): ");
+				System.out.print("Do you want to continue? (y/n): ");
 				String choice = scan.nextLine();
 			
 				if(choice.equalsIgnoreCase("y")) {clearScreen(); isContinue=true; break;}
@@ -798,7 +794,7 @@ public class MCAMS {
 			
 			boolean isContinue;
 			while(true) {
-				System.out.println("Do you want to continue? (y/n): ");
+				System.out.print("Do you want to continue? (y/n): ");
 				String choice = scan.nextLine();
 			
 				if(choice.equalsIgnoreCase("y")) {clearScreen(); isContinue=true; break;}
@@ -866,11 +862,11 @@ public class MCAMS {
 				System.out.println("Updated On: "+getBean.getUpdatedOn());
 			}
 			else
-				System.out.println("No Record Found");
+				System.out.println("No Record Found!");
 			
 			boolean isContinue;
 			while(true) {
-				System.out.println("Do you want to continue? (y/n): ");
+				System.out.print("Do you want to continue? (y/n): ");
 				String choice = scan.nextLine();
 			
 				if(choice.equalsIgnoreCase("y")) {clearScreen(); isContinue=true; break;}
@@ -918,7 +914,7 @@ public class MCAMS {
 			
 			boolean isContinue;
 			while(true) {
-				System.out.println("Do you want to continue? (y/n): ");
+				System.out.print("Do you want to continue? (y/n): ");
 				String choice = scan.nextLine();
 			
 				if(choice.equalsIgnoreCase("y")) {clearScreen(); isContinue=true; break;}
@@ -1041,7 +1037,7 @@ public class MCAMS {
 			
 			boolean isContinue;
 			while(true) {
-				System.out.println("Do you want to continue? (y/n): ");
+				System.out.print("Do you want to continue? (y/n): ");
 				String choice = scan.nextLine();
 			
 				if(choice.equalsIgnoreCase("y")) {clearScreen(); isContinue=true; break;}
@@ -1058,6 +1054,7 @@ public class MCAMS {
 		String name,caeIpi;
 		LocalDate bDate, dDate;
 		char[] mSocietyId;
+		String mSocietyName=null;
 		
 		while(true){
 			clearScreen();
@@ -1116,6 +1113,11 @@ public class MCAMS {
 				else System.out.println("\nPlease enter valid input!\n");
 			}
 			
+			if(adminService.checkMSociety(new String(mSocietyId))) {
+				System.out.print("Enter music society name: ");
+				mSocietyName = scan.nextLine();
+			}
+			
 			compBean.setName(name);
 			compBean.setBornDate(bDate);
 			compBean.setDiedDate(dDate);
@@ -1124,7 +1126,7 @@ public class MCAMS {
 			compBean.setUpdatedBy(userId);
 			compBean.setCreatedBy(userId);
 			
-			int genId = adminService.createComposer(compBean,false);
+			int genId = adminService.createComposer(compBean,false,mSocietyName);
 			
 			if(genId>0) System.out.println("\nComposer record submitted with id: "+genId+"\n");
 			else if(genId<0){
@@ -1135,7 +1137,7 @@ public class MCAMS {
 						String persist = scan.nextLine();
 						
 						if(persist.equalsIgnoreCase("y")){
-							genId = adminService.createComposer(compBean,true);
+							genId = adminService.createComposer(compBean,true,mSocietyName);
 							System.out.println("\nComposer record submitted with id: "+genId+"\n");
 							break;
 						}
@@ -1149,7 +1151,7 @@ public class MCAMS {
 				}
 				else {
 					compBean.setId(Math.abs(genId+100000));
-					genId = adminService.createComposer(compBean,true);
+					genId = adminService.createComposer(compBean,true,mSocietyName);
 					System.out.println("\nComposer record submitted with id: "+genId+"\n");
 				}
 			}
@@ -1157,7 +1159,7 @@ public class MCAMS {
 			
 			boolean isContinue;
 			while(true) {
-				System.out.println("Do you want to continue? (y/n): ");
+				System.out.print("Do you want to continue? (y/n): ");
 				String choice = scan.nextLine();
 			
 				if(choice.equalsIgnoreCase("y")) {clearScreen(); isContinue=true; break;}
@@ -1185,9 +1187,9 @@ public class MCAMS {
 				int i=1;
 				for (SongBean songBean : songList) {
 					if(userId==100000)
-						System.out.println(songBean.getId()+" "+songBean.getName()+" "+songBean.getDuration()+" "+songBean.getCreatedBy()+" "+songBean.getCreatedOn()+" "+songBean.getUpdatedBy()+" "+songBean.getUpdatedOn());
+						System.out.println(songBean.getId()+" "+songBean.getName()+" "+songBean.getDuration().getMinute()+":"+songBean.getDuration().getSecond()+" "+songBean.getCreatedBy()+" "+songBean.getCreatedOn()+" "+songBean.getUpdatedBy()+" "+songBean.getUpdatedOn());
 					else {
-						System.out.println(i+") "+songBean.getName()+" "+songBean.getDuration());
+						System.out.println(i+") "+songBean.getName()+" "+songBean.getDuration().getMinute()+":"+songBean.getDuration().getSecond());
 						i++;
 					}
 				}
@@ -1195,7 +1197,7 @@ public class MCAMS {
 			
 			boolean isContinue;
 			while(true) {
-				System.out.println("Do you want to continue? (y/n): ");
+				System.out.print("Do you want to continue? (y/n): ");
 				String choice = scan.nextLine();
 			
 				if(choice.equalsIgnoreCase("y")) {clearScreen(); isContinue=true; break;}
@@ -1233,7 +1235,7 @@ public class MCAMS {
 			
 			boolean isContinue;
 			while(true) {
-				System.out.println("Do you want to continue? (y/n): ");
+				System.out.print("Do you want to continue? (y/n): ");
 				String choice = scan.nextLine();
 			
 				if(choice.equalsIgnoreCase("y")) {clearScreen(); isContinue=true; break;}

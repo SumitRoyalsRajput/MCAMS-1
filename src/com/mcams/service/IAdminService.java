@@ -10,7 +10,7 @@ public interface IAdminService {
 
 	ArtistBean createArtist(ArtistBean artBean, boolean isUpdate);
 
-	int createComposer(ComposerBean compBean, boolean isUpdate);
+	int createComposer(ComposerBean compBean, boolean isUpdate, String mSocietyName);
 
 	ArrayList<SongBean> searchArtistSong(String name);
 

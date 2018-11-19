@@ -17,8 +17,8 @@ public class AdminService implements IAdminService {
 	}
 
 	@Override
-	public int createComposer(ComposerBean compBean, boolean isUpdate) {
-		return adminDao.createComposer(compBean,isUpdate);
+	public int createComposer(ComposerBean compBean, boolean isUpdate, String mSocietyName) {
+		return adminDao.createComposer(compBean,isUpdate,mSocietyName);
 	}
 	
 	@Override
@@ -79,5 +79,9 @@ public class AdminService implements IAdminService {
 
 	public SongBean searchSong(String name) {
 		return adminDao.searchSong(name);
+	}
+
+	public boolean checkMSociety(String mSocietyId) {
+		return adminDao.checkMSociety(mSocietyId);
 	}
 }
