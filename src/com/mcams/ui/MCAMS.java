@@ -194,7 +194,7 @@ public class MCAMS {
 			switch(choice) {
 			case 1: deleteArtist(userId); break;
 			case 2: deleteComposer(userId); break;
-			case 3: return;
+			case 3: {clearScreen(); return;}
 			case 4: exit();
 			default: System.out.println("\nPlease enter valid choice!\n");
 			}
@@ -249,7 +249,7 @@ public class MCAMS {
 				String choice = scan.nextLine();
 				
 				if(choice.equalsIgnoreCase("y")) break;
-				else if(choice.equalsIgnoreCase("n")) return;
+				else if(choice.equalsIgnoreCase("n")) {clearScreen(); return;}
 				else System.out.println("\nPlease enter valid choice!\n");
 			}
 		}
@@ -299,7 +299,7 @@ public class MCAMS {
 				String choice = scan.nextLine();
 				
 				if(choice.equalsIgnoreCase("y")) break;
-				else if(choice.equalsIgnoreCase("n")) return;
+				else if(choice.equalsIgnoreCase("n")) {clearScreen(); return;}
 				else System.out.println("\nPlease enter valid choice!\n");
 			}
 		}
@@ -320,7 +320,7 @@ public class MCAMS {
 			switch(choice) {
 			case 1: artSongAssoc(userId); break;
 			case 2: compSongAssoc(userId); break;
-			case 3: return;
+			case 3: {clearScreen(); return;}
 			case 4: exit();
 			default: System.out.println("\nPlease enter valid choice!\n");
 			}
@@ -517,7 +517,7 @@ public class MCAMS {
 			
 			switch(choice) {
 			case 1: searchSong(userId); break;
-			case 2: return;
+			case 2: {attempt=3; return;}
 			case 3: exit();
 			default: System.out.println("\nPlease enter valid choice!\n");
 			}
@@ -571,14 +571,8 @@ public class MCAMS {
 			choice = scan.nextInt();
 			scan.nextLine();
 		
-			if(choice==1) {
-				editArtist(userId);
-				break;
-			}
-			else if(choice==2) {
-				editComposer(userId);
-				break;
-			}
+			if(choice==1) editArtist(userId);
+			else if(choice==2) editComposer(userId);
 			else if(choice==3) {clearScreen(); return;}
 			else if(choice==4) exit();
 			else System.out.println("\nPlease enter valid choice!\n");
@@ -829,7 +823,7 @@ public class MCAMS {
 			
 			if(choice.equals("1")) seachArtist();
 			else if(choice.equals("2")) searchComposer();
-			else if(choice.equals("3")) return;
+			else if(choice.equals("3")) {clearScreen(); return;}
 			else if(choice.equals("4")) exit();
 			else System.out.println("\nPlease enter valid choice!\n");
 		}
@@ -949,7 +943,7 @@ public class MCAMS {
 			
 			if(choice.equals("1")) seachArtistSongs(userId);
 			else if(choice.equals("2")) searchComposerSongs(userId);
-			else if(choice.equals("3")) return;
+			else if(choice.equals("3")) {clearScreen(); return;}
 			else if(choice.equals("4")) exit();
 			else System.out.println("\nPlease enter valid choice!\n");
 		}
@@ -1044,6 +1038,18 @@ public class MCAMS {
 				}
 			}
 			else System.out.println("Something went wrong... please try again later.");
+			
+			boolean isContinue;
+			while(true) {
+				System.out.println("Do you want to continue? (y/n): ");
+				String choice = scan.nextLine();
+			
+				if(choice.equalsIgnoreCase("y")) {clearScreen(); isContinue=true; break;}
+				else if(choice.equalsIgnoreCase("n")) {clearScreen(); isContinue=false; break;}
+				else System.out.println("\nPlease enter valid choice!");
+			}
+			
+			if(!isContinue) break;
 		}	
 	}
 	
@@ -1148,6 +1154,18 @@ public class MCAMS {
 				}
 			}
 			else System.out.println("Something went wrong... please try again later.");
+			
+			boolean isContinue;
+			while(true) {
+				System.out.println("Do you want to continue? (y/n): ");
+				String choice = scan.nextLine();
+			
+				if(choice.equalsIgnoreCase("y")) {clearScreen(); isContinue=true; break;}
+				else if(choice.equalsIgnoreCase("n")) {clearScreen(); isContinue=false; break;}
+				else System.out.println("\nPlease enter valid choice!");
+			}
+			
+			if(!isContinue) break;
 		}
 	}
 	
@@ -1158,7 +1176,7 @@ public class MCAMS {
 			System.out.print("Enter artist name: ");
 			name=scan.nextLine();
 			
-			if(userId==100000) songList=adminService.searchArtistSong(name);
+			if(userId==100000 || userId==100001) songList=adminService.searchArtistSong(name);
 			else songList=userService.searchArtistSong(name);
 			
 			if(songList==null) System.out.println("\nNo record found!\n");
@@ -1237,7 +1255,7 @@ public class MCAMS {
 	}
 	
 	public static void exit() {
-		System.out.println("Exiting program...");
+		System.out.println("\n-PROGRAM TERMINATED-");
 		System.exit(0);		
 	}
 
