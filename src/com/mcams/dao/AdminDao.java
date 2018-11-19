@@ -466,8 +466,10 @@ public class AdminDao implements IAdminDao {
 
 	public SongBean searchSong(String name) {
 		SongBean sb = new SongBean();
+		
 		ResultSet rs;
 		try {
+			st = conn.createStatement();
 			sql = "SELECT Song_Id, Song_Name, Song_Duration FROM Song_Master WHERE Song_Name='"+name+"' AND Song_DeletedFlag=0";
 			rs = st.executeQuery(sql);
 			if(!rs.next()) return null;
