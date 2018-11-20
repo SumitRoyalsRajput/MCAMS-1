@@ -10,7 +10,7 @@ import com.mcams.exception.AppException;
 import com.mcams.util.DBUtil;
 
 public class AuthenticationDAO implements IAuthenticationDAO {
-	static Connection conn = DBUtil.getConnection();
+	public static Connection conn = DBUtil.getConnection();
 	
 	public int checkCredentials(AuthenticationBean bean) throws AppException {
 		String sql = "SELECT User_Password FROM User_Master WHERE User_Id='"+bean.getUserId()+"'";

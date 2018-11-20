@@ -10,7 +10,7 @@ import com.mcams.bean.SongBean;
 import com.mcams.util.DBUtil;
 
 public class UserDao implements IUserDao {
-	Connection conn = DBUtil.getConnection();
+	Connection conn = AuthenticationDAO.conn;
 	
 	@Override
 	public ArrayList<SongBean> searchArtist(String name) {

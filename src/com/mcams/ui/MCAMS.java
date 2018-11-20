@@ -33,16 +33,16 @@ public class MCAMS {
 	public static void main(String[] args) throws AppException {loginHome();}
 
 	private static void loginHome() throws AppException {
-		while(true) {
-			clearScreen();			
-			System.out.println("*************Music_Composer_and_Artist_Management_System*************\n");
-			
+		while(true) {			
 			String userId;
 			String password;
 			int result;
 			
 			int choice;
 			while(true){
+				clearScreen();			
+				System.out.println("*************Music_Composer_and_Artist_Management_System*************\n");
+				
 				System.out.println("1. Login");
 				System.out.println("2. Exit");
 				System.out.print("Enter your choice: ");
@@ -151,39 +151,42 @@ public class MCAMS {
 	}
 	
 	private static void deleteSong(int userId) {
-		clearScreen();
-		String name;
-		while(true){
-			System.out.println("\nDELETE SONG");
-			System.out.print("Enter Song Name: ");
-			name = scan.nextLine();
-			boolean isValid = valService.validateName(name);
-			if(isValid) break;
-			else System.out.println("\nPlease enter valid name! (MinChar:3, MaxChar:50)\n");
-		}
-		
-		SongBean getSong = adminService.searchSong(name);
-		
-		if(getSong!=null) {
-			int result = adminService.deleteSong(getSong.getId(), userId);
-			if(result==0) System.out.println("Song Deleted Successfully!");
-			else System.out.println("Something went wrong! Please try again later...");
-		}
-		else System.out.println("\nNo Record Found!\n");
-		
 		while(true) {
-			System.out.print("\nDo you want to continue? (y/n): ");
-			String choice = scan.nextLine();
+			clearScreen();
+			String name;
+			while(true){
+				System.out.println("\nDELETE SONG");
+				System.out.print("Enter Song Name: ");
+				name = scan.nextLine();
+				boolean isValid = valService.validateName(name);
+				if(isValid) break;
+				else System.out.println("\nPlease enter valid name! (MinChar:3, MaxChar:50)\n");
+			}
 			
-			if(choice.equalsIgnoreCase("y")) break;
-			else if(choice.equalsIgnoreCase("n")) return;
-			else System.out.println("\nPlease enter valid choice!\n");
+			SongBean getSong = adminService.searchSong(name);
+			
+			if(getSong!=null) {
+				int result = adminService.deleteSong(getSong.getId(), userId);
+				if(result==0) System.out.println("Song Deleted Successfully!");
+				else System.out.println("Something went wrong! Please try again later...");
+			}
+			else System.out.println("\nNo Record Found!\n");
+			
+			while(true) {
+				System.out.print("\nDo you want to continue? (y/n): ");
+				String choice = scan.nextLine();
+				
+				if(choice.equalsIgnoreCase("y")) break;
+				else if(choice.equalsIgnoreCase("n")) {clearScreen(); return;}
+				else System.out.println("\nPlease enter valid choice!\n");
+			}
 		}
 	}
 
 	private static void deleteAC(int userId) {
 		int choice;
 		clearScreen();
+		System.out.println("DELETE ARTIST/COMPOSER\n");
 		while(true) {
 			System.out.println("1. Delete Artist");
 			System.out.println("2. Delete Composer");
@@ -206,9 +209,9 @@ public class MCAMS {
 	private static void deleteComposer(int userId) {
 		while(true) {
 			clearScreen();
+			System.out.println("DELETE COMPOSER\n");
 			String name;
 			while(true){
-				System.out.println("\nDELETE COMPOSER");
 				System.out.print("Enter Composer name: ");
 				name = scan.nextLine();
 				boolean isValid = valService.validateName(name);
@@ -294,7 +297,7 @@ public class MCAMS {
 				}
 				else return;			
 			}
-			else System.out.println("No Record Found!");
+			else System.out.println("\nNo Record Found!\n");
 			
 			while(true) {
 				System.out.print("\nDo you want to continue? (y/n): ");
@@ -310,6 +313,7 @@ public class MCAMS {
 	private static void songAssociate(int userId) {
 		int choice;
 		clearScreen();
+		System.out.println("ARTIST/COMPOSER SONG ASSOCIATION\n");
 		while(true) {
 			System.out.println("1. Associate songs to Artist");
 			System.out.println("2. Associate songs to Composer");
@@ -535,9 +539,9 @@ public class MCAMS {
 		String choice;
 		
 		clearScreen();
+		System.out.println("CREATE ARTIST/COMPOSER\n");
 		
 		while(true) {
-			System.out.println();
 			System.out.println("1. Create Artist");
 			System.out.println("2. Create Composer");
 			System.out.println("3. Back");
@@ -560,9 +564,9 @@ public class MCAMS {
 		String choice;
 		
 		clearScreen();
+		System.out.println("EDIT COMPOSER/ARTIST\n");
 		
 		while(true) {
-			System.out.println();
 			System.out.println("1. Edit Artist");
 			System.out.println("2. Edit Composer");
 			System.out.println("3. Back");
@@ -688,7 +692,7 @@ public class MCAMS {
 					else System.out.println("Problem while updating composer's information.");
 			}
 			else
-				System.out.println("No Record Found");
+				System.out.println("\nNo Record Found!\n");
 			
 			boolean isContinue;
 			while(true) {
@@ -793,7 +797,7 @@ public class MCAMS {
 					else System.out.println("\nProblem occured while updating artist's information...\n");
 			}
 			else
-				System.out.println("No Record Found!");
+				System.out.println("\nNo Record Found!\n");
 			
 			boolean isContinue;
 			while(true) {
@@ -811,6 +815,8 @@ public class MCAMS {
 
 	private static void searchAC() {
 		clearScreen();
+		System.out.println("SEARCH ARTIST/COMPOSER\n");
+		
 		String choice;
 		while(true) {
 			System.out.println("1. Search Artist");
@@ -865,7 +871,7 @@ public class MCAMS {
 				System.out.println("Updated On: "+getBean.getUpdatedOn());
 			}
 			else
-				System.out.println("No Record Found!");
+				System.out.println("\nNo Record Found!\n");
 			
 			boolean isContinue;
 			while(true) {
@@ -913,7 +919,7 @@ public class MCAMS {
 				System.out.println("Updated On: "+getBean.getUpdatedOn());
 			}
 			else
-				System.out.println("No Record Found");
+				System.out.println("\nNo Record Found!\n");
 			
 			boolean isContinue;
 			while(true) {
@@ -931,6 +937,8 @@ public class MCAMS {
 
 	private static void searchSong(int userId) {
 		clearScreen();
+		System.out.println("SEARCH ARTIST/COMPOSER\n");
+		
 		String choice;
 		while(true) {
 			System.out.println("1. Search Artist's songs");
@@ -955,9 +963,9 @@ public class MCAMS {
 		
 		while(true){
 			clearScreen();
-		
+			System.out.println("CREATE ARTIST\n");
+			
 			while(true){
-				System.out.println("\nCREATE ARTIST");
 				System.out.print("Enter name: ");
 				name = scan.nextLine();
 				boolean isValid = valService.validateName(name);
@@ -1063,9 +1071,9 @@ public class MCAMS {
 		
 		while(true){
 			clearScreen();
-		
+			System.out.println("CREATE COMPOSER\n");
+			
 			while(true){
-				System.out.println("\nCREATE COMPOSER");
 				System.out.print("Enter name: ");
 				name = scan.nextLine();
 				boolean isValid = valService.validateName(name);
@@ -1186,6 +1194,8 @@ public class MCAMS {
 	private static void seachArtistSongs(int userId) {
 		String name, adminFormat = "%-8s %-35s %-8s %-10s %-10s %-10s %-10s", userFormat = "%-6s %-30s %-8s";
 		ArrayList<SongBean> songList;
+		clearScreen();
+		System.out.println("SEARCH ARTIST SONGS\n");
 		while(true) {
 			
 			while(true){
@@ -1238,7 +1248,10 @@ public class MCAMS {
 	private static void searchComposerSongs(int userId) {
 		String name, adminFormat = "%-8s %-35s %-8s %-10s %-10s %-10s %-10s", userFormat = "%-6s %-30s %-8s";
 		ArrayList<SongBean> songList;
+		
 		while(true) {
+			clearScreen();
+			System.out.println("SEARCH COMPOSER SONGS\n");
 			
 			while(true){
 				System.out.print("Enter Composer name: ");
@@ -1297,7 +1310,7 @@ public class MCAMS {
 	}
 	
 	public static void exit() {
-		System.out.println("\n-PROGRAM TERMINATED-");
+		System.out.println("\n<-PROGRAM TERMINATED->");
 		System.exit(0);		
 	}
 
