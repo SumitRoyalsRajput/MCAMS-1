@@ -18,8 +18,8 @@ public class DBUtil {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 //			System.out.println("Connecting to database... please wait...");
 //			Connection conn = DriverManager.getConnection(p.getProperty("url"),p.getProperty("username"),p.getProperty("password"));
-			Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@10.51.103.201:1521:orcl11g","lab08trg27","lab08oracle");
-//			Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:orcl","system","sys");
+//			Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@10.51.103.201:1521:orcl11g","lab08trg27","lab08oracle");
+			Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:orcl","system","system");
 //			if(conn!=null) System.out.println("CONNECTED: "+conn);
 //			else{
 //				System.out.println("Connection Failed!");
