@@ -155,7 +155,7 @@ public class MCAMS {
 		String name;
 		while(true){
 			System.out.println("\nDELETE SONG");
-			System.out.print("Enter name: ");
+			System.out.print("Enter Song Name: ");
 			name = scan.nextLine();
 			boolean isValid = valService.validateName(name);
 			if(isValid) break;
@@ -209,7 +209,7 @@ public class MCAMS {
 			String name;
 			while(true){
 				System.out.println("\nDELETE COMPOSER");
-				System.out.print("Enter name: ");
+				System.out.print("Enter Composer name: ");
 				name = scan.nextLine();
 				boolean isValid = valService.validateName(name);
 				if(isValid) break;
@@ -264,7 +264,7 @@ public class MCAMS {
 			String name;
 			while(true){
 				System.out.println("\nDELETE ARTIST");
-				System.out.print("Enter name: ");
+				System.out.print("Enter Artist name: ");
 				name = scan.nextLine();
 				boolean isValid = valService.validateName(name);
 				if(isValid) break;
@@ -388,6 +388,7 @@ public class MCAMS {
 								}
 								else System.out.println("\nPlease enter valid input! (Y or N)\n");
 							}
+							break;
 						}
 						else {
 							songBean.setId(Math.abs(getSongBean.getId()+100000));
@@ -465,7 +466,8 @@ public class MCAMS {
 								System.out.print("\nThis song already present.\nDo you want to update it with this information? (y/n): ");
 								String persist = scan.nextLine();
 								
-								if(persist.equalsIgnoreCase("y")){						
+								if(persist.equalsIgnoreCase("y")){		
+									songBean.setCreatedOn(getSongBean.getCreatedOn());
 									songBean = adminService.assocArtist(songBean,artBean,userId,true);
 									System.out.println("\nSong record submitted with id: "+songBean.getId()+"\n");
 									break;
@@ -476,11 +478,14 @@ public class MCAMS {
 								}
 								else System.out.println("\nPlease enter valid input! (Y or N)\n");
 							}
+							break;
 						}
 						else {
 							songBean.setId(Math.abs(getSongBean.getId()+100000));
+							songBean.setCreatedOn(LocalDate.now());
 							songBean = adminService.assocArtist(songBean,artBean,userId,true);
-							System.out.println("\nSong record submitted with id: "+songBean.getId()+"\n");
+							if(songBean.getId()==0) System.out.println("Something went wrong");
+							else System.out.println("\nSong record submitted with id: "+songBean.getId()+"\n");
 							break;
 						}
 					}
@@ -527,7 +532,7 @@ public class MCAMS {
 	}
 	
 	private static void createAC(int userId, String password) throws AppException {
-		int choice;
+		String choice;
 		
 		clearScreen();
 		
@@ -538,13 +543,12 @@ public class MCAMS {
 			System.out.println("3. Back");
 			System.out.println("4. Exit");
 			System.out.print("Enter choice: ");
-			choice = scan.nextInt();
-			scan.nextLine();
-		
-			if(choice==1) createArtist(userId);
-			else if(choice==2) createComposer(userId);
-			else if(choice==3) {clearScreen(); return;}
-			else if(choice==4) exit();
+			choice = scan.nextLine();
+					
+			if(choice.equals("1")) createArtist(userId);
+			else if(choice.equals("2")) createComposer(userId);
+			else if(choice.equals("3")) {clearScreen(); return;}
+			else if(choice.equals("4")) exit();
 			else System.out.println("\nPlease enter valid choice!\n");
 		}
 	
@@ -553,7 +557,7 @@ public class MCAMS {
 
 
 	private static void editAC(int userId) {
-		int choice;
+		String choice;
 		
 		clearScreen();
 		
@@ -564,13 +568,12 @@ public class MCAMS {
 			System.out.println("3. Back");
 			System.out.println("4. Exit");
 			System.out.print("Enter choice: ");
-			choice = scan.nextInt();
-			scan.nextLine();
+			choice = scan.nextLine();
 		
-			if(choice==1) editArtist(userId);
-			else if(choice==2) editComposer(userId);
-			else if(choice==3) {clearScreen(); return;}
-			else if(choice==4) exit();
+			if(choice.equals("1")) editArtist(userId);
+			else if(choice.equals("2")) editComposer(userId);
+			else if(choice.equals("3")) {clearScreen(); return;}
+			else if(choice.equals("4")) exit();
 			else System.out.println("\nPlease enter valid choice!\n");
 		}
 	}
@@ -585,7 +588,7 @@ public class MCAMS {
 			char[] mSocietyId;
 			while(true){
 				System.out.println("\nEDIT COMPOSER");
-				System.out.print("Enter name: ");
+				System.out.print("Enter Composer name: ");
 				name = scan.nextLine();
 				boolean isValid = valService.validateName(name);
 				if(isValid) break;
@@ -710,7 +713,7 @@ public class MCAMS {
 			LocalDate bDate, dDate;
 			while(true){
 				System.out.println("\nEDIT ARTIST");
-				System.out.print("Enter name: ");
+				System.out.print("Enter Artist name: ");
 				name = scan.nextLine();
 				boolean isValid = valService.validateName(name);
 				if(isValid) break;
@@ -832,7 +835,7 @@ public class MCAMS {
 			String name;
 			while(true){
 				System.out.println("\nSEARCH COMPOSER");
-				System.out.print("Enter name: ");
+				System.out.print("Enter Composer name: ");
 				name = scan.nextLine();
 				boolean isValid = valService.validateName(name);
 				if(isValid) break;
@@ -884,7 +887,7 @@ public class MCAMS {
 			String name;
 			while(true){
 				System.out.println("\nSEARCH ARTIST");
-				System.out.print("Enter name: ");
+				System.out.print("Enter Artist name: ");
 				name = scan.nextLine();
 				boolean isValid = valService.validateName(name);
 				if(isValid) break;
@@ -983,11 +986,13 @@ public class MCAMS {
 			
 				if(!input.equalsIgnoreCase("NA")){
 					dDate = valService.validateDate(input);
-					if(bDate.isAfter(dDate)){
-						System.out.println("\nDied date should be after Born date");
-						continue;
+					if(dDate!=null){
+						if(bDate.isAfter(dDate)){
+							System.out.println("\nDied date should be after Born date");
+							continue;
+						}
+						break;
 					}
-					if(dDate!=null) break;
 					else System.out.println("\nPlease enter valid date! (dd/mm/yyyy)\n");
 				}
 				else{
@@ -1060,6 +1065,7 @@ public class MCAMS {
 			clearScreen();
 		
 			while(true){
+				System.out.println("\nCREATE COMPOSER");
 				System.out.print("Enter name: ");
 				name = scan.nextLine();
 				boolean isValid = valService.validateName(name);
@@ -1078,7 +1084,7 @@ public class MCAMS {
 				}
 				else{
 					bDate=null;
-					break;
+					break; 
 				}
 			}
 		
@@ -1088,7 +1094,13 @@ public class MCAMS {
 			
 				if(!input.equalsIgnoreCase("NA")){
 					dDate = valService.validateDate(input);
-					if(dDate!=null) break;
+					if(dDate!=null){
+						if(bDate.isAfter(dDate)){
+							System.out.println("\nDied date should be after Born date");
+							continue;
+						}
+						break;
+					}
 					else System.out.println("\nPlease enter valid date! (dd/mm/yyyy)\n");
 				}
 				else{
@@ -1113,7 +1125,7 @@ public class MCAMS {
 				else System.out.println("\nPlease enter valid input!\n");
 			}
 			
-			if(adminService.checkMSociety(new String(mSocietyId))) {
+			if(!adminService.checkMSociety(new String(mSocietyId))) {
 				System.out.print("Enter music society name: ");
 				mSocietyName = scan.nextLine();
 			}
@@ -1172,24 +1184,38 @@ public class MCAMS {
 	}
 	
 	private static void seachArtistSongs(int userId) {
-		String name;
+		String name, adminFormat = "%-8s %-35s %-8s %-10s %-10s %-10s %-10s", userFormat = "%-6s %-30s %-8s";
 		ArrayList<SongBean> songList;
 		while(true) {
-			System.out.print("Enter artist name: ");
-			name=scan.nextLine();
+			
+			while(true){
+				System.out.print("Enter name: ");
+				name = scan.nextLine();
+				boolean isValid = valService.validateName(name);
+				if(isValid) break;
+				else System.out.println("\nPlease enter valid name! (MinChar:3, MaxChar:50)\n");
+			}
 			
 			if(userId==100000 || userId==100001) songList=adminService.searchArtistSong(name);
 			else songList=userService.searchArtistSong(name);
 			
-			if(songList==null) System.out.println("\nNo record found!\n");
+			if(songList == null) System.out.println("\nArtist not found");
+			else if(songList.isEmpty()) System.out.println("\nNo record found!\n");
 			else{
 				System.out.println("\nSongs associated to "+name);
 				int i=1;
+				if(userId==100000 || userId==100001)
+					System.out.printf(adminFormat, "Song_Id", "Song_Name", "Duration", "Created_By", "Created_On", "Updated_By", "Updated_On\n");
+				else
+					System.out.printf(userFormat, "Sr.No.", "Song_Name", "Duration\n");
 				for (SongBean songBean : songList) {
-					if(userId==100000)
-						System.out.println(songBean.getId()+" "+songBean.getName()+" "+songBean.getDuration().getMinute()+":"+songBean.getDuration().getSecond()+" "+songBean.getCreatedBy()+" "+songBean.getCreatedOn()+" "+songBean.getUpdatedBy()+" "+songBean.getUpdatedOn());
+					if(userId==100000 || userId==100001){
+						System.out.printf(adminFormat, songBean.getId(), songBean.getName(), songBean.getDuration().getMinute()+":"+songBean.getDuration().getSecond(), songBean.getCreatedBy(), songBean.getCreatedOn(), songBean.getUpdatedBy(), songBean.getUpdatedOn());
+						System.out.println();
+					}
 					else {
-						System.out.println(i+") "+songBean.getName()+" "+songBean.getDuration().getMinute()+":"+songBean.getDuration().getSecond());
+						System.out.printf(userFormat, i+")", songBean.getName(), songBean.getDuration().getMinute()+":"+songBean.getDuration().getSecond());
+						System.out.println();
 						i++;
 					}
 				}
@@ -1210,24 +1236,38 @@ public class MCAMS {
 	}
 
 	private static void searchComposerSongs(int userId) {
-		String name;
+		String name, adminFormat = "%-8s %-35s %-8s %-10s %-10s %-10s %-10s", userFormat = "%-6s %-30s %-8s";
 		ArrayList<SongBean> songList;
 		while(true) {
-			System.out.print("Enter composer name: ");
-			name=scan.nextLine();
 			
-			if(userId==100000) songList=adminService.searchComposerSong(name);
+			while(true){
+				System.out.print("Enter Composer name: ");
+				name = scan.nextLine();
+				boolean isValid = valService.validateName(name);
+				if(isValid) break;
+				else System.out.println("\nPlease enter valid name! (MinChar:3, MaxChar:50)\n");
+			}
+			
+			if(userId==100000 || userId==100001) songList=adminService.searchComposerSong(name);
 			else songList=userService.searchComposerSong(name);
 			
-			if(songList==null) System.out.println("\nNo record found!\n");
+			if(songList == null) System.out.println("\nComposer not found");
+			else if(songList.isEmpty()) System.out.println("\nNo record found!\n");
 			else{
 				System.out.println("\nSongs associated to "+name);
 				int i=1;
+				if(userId==100000 || userId==100001)
+					System.out.printf(adminFormat, "Song_Id", "Song_Name", "Duration", "Created_By", "Created_On", "Updated_By", "Updated_On\n");
+				else
+					System.out.printf(userFormat, "Sr.No.", "Song_Name", "Duration\n");
 				for (SongBean songBean : songList) {
-					if(userId==100000)
-						System.out.println(songBean.getId()+" "+songBean.getName()+" "+songBean.getDuration().getMinute()+":"+songBean.getDuration().getSecond()+" "+songBean.getCreatedBy()+" "+songBean.getCreatedOn()+" "+songBean.getUpdatedBy()+" "+songBean.getUpdatedOn());
+					if(userId==100000 || userId==100001){
+						System.out.printf(adminFormat, songBean.getId(), songBean.getName(), songBean.getDuration().getMinute()+":"+songBean.getDuration().getSecond(), songBean.getCreatedBy(), songBean.getCreatedOn(), songBean.getUpdatedBy(), songBean.getUpdatedOn());
+						System.out.println();
+					}
 					else {
-						System.out.println(i+") "+songBean.getName()+" "+songBean.getDuration());
+						System.out.printf(userFormat, i+")",songBean.getName(), songBean.getDuration().getMinute()+":"+songBean.getDuration().getSecond());
+						System.out.println();
 						i++;
 					}
 				}

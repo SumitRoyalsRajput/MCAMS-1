@@ -17,7 +17,6 @@ public class UserDao implements IUserDao {
 		String sql;
 		Statement st;
 		ResultSet rs;
-		SongBean sb = new SongBean();
 		ArrayList<SongBean> songList = new ArrayList<SongBean>();
 		
 		sql="SELECT Artist_Id FROM Artist_Master WHERE Artist_Name='"+name+"' AND Artist_DeletedFlag=0";
@@ -30,6 +29,7 @@ public class UserDao implements IUserDao {
 						+ "Artist_Song_Assoc.Artist_Id IN (SELECT Artist_Id FROM Artist_Master WHERE Artist_Name='"+name+"') AND Song_Master.Song_DeletedFlag=0";
 				rs = st.executeQuery(sql);
 				while(rs.next()){
+					SongBean sb = new SongBean();
 					sb.setName(rs.getString(1));
 					sb.setDuration(rs.getTime(2).toLocalTime());
 					songList.add(sb);
@@ -47,7 +47,6 @@ public class UserDao implements IUserDao {
 		String sql;
 		Statement st;
 		ResultSet rs;
-		SongBean sb = new SongBean();
 		ArrayList<SongBean> songList = new ArrayList<SongBean>();
 		
 		sql="SELECT Composer_Id FROM Composer_Master WHERE Composer_Name='"+name+"' AND Composer_DeletedFlag=0";
@@ -60,6 +59,7 @@ public class UserDao implements IUserDao {
 						+ "Composer_Song_Assoc.Composer_Id IN (SELECT Composer_Id FROM Composer_Master WHERE Composer_Name='"+name+"') AND Song_Master.Song_DeletedFlag=0";
 				rs = st.executeQuery(sql);
 				while(rs.next()){
+					SongBean sb = new SongBean();
 					sb.setName(rs.getString(1));
 					sb.setDuration(rs.getTime(2).toLocalTime());
 					songList.add(sb);
