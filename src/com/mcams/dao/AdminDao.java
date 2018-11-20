@@ -25,7 +25,7 @@ public class AdminDao implements IAdminDao {
 		}
 		
 		else {
-			sql = "SELECT * FROM Artist_Master WHERE Artist_Name='"+artBean.getName()+"'";
+			sql = "SELECT * FROM Artist_Master WHERE LOWER(Artist_Name) LIKE LOWER('%"+artBean.getName()+"%')";
 			try {
 				st = conn.createStatement();
 				ResultSet rs = st.executeQuery(sql);
@@ -90,7 +90,7 @@ public class AdminDao implements IAdminDao {
 		}
 		
 		else {			
-			sql = "SELECT Composer_Id, Composer_DeletedFlag FROM Composer_Master WHERE Composer_Name='"+compBean.getName()+"'";
+			sql = "SELECT Composer_Id, Composer_DeletedFlag FROM Composer_Master WHERE LOWER(Composer_Name) LIKE LOWER('%"+compBean.getName()+"%')";
 			try {
 				st = conn.createStatement();
 				ResultSet rs = st.executeQuery(sql);
@@ -137,14 +137,14 @@ public class AdminDao implements IAdminDao {
 		ResultSet rs;
 		ArrayList<SongBean> songList = new ArrayList<SongBean>();
 		
-		sql="SELECT Artist_Id from Artist_Master WHERE Artist_Name='"+name+"' AND Artist_DeletedFlag=0";
+		sql="SELECT Artist_Id from Artist_Master WHERE LOWER(Artist_Name) LIKE LOWER('%"+name+"%') AND Artist_DeletedFlag=0";
 		try {
 			st = conn.createStatement();
 			rs = st.executeQuery(sql);
 			if(!rs.next()) return null;
 			else {
 				sql =  "SELECT * from Song_Master INNER JOIN Artist_Song_Assoc ON Artist_Song_Assoc.Song_Id=Song_Master.Song_Id WHERE "
-						+ "Artist_Song_Assoc.Artist_Id IN (select Artist_Id FROM Artist_Master WHERE Artist_Name='"+name+"') AND Song_Master.Song_DeletedFlag=0";
+						+ "Artist_Song_Assoc.Artist_Id IN (select Artist_Id FROM Artist_Master WHERE LOWER(Artist_Name) LIKE LOWER('%"+name+"%')) AND Song_Master.Song_DeletedFlag=0";
 				rs = st.executeQuery(sql);
 				while(rs.next()){
 					SongBean sb = new SongBean();
@@ -170,14 +170,14 @@ public class AdminDao implements IAdminDao {
 		ResultSet rs;
 		ArrayList<SongBean> songList = new ArrayList<SongBean>();
 		
-		sql="SELECT Composer_Id from Composer_Master WHERE Composer_Name='"+name+"' AND Composer_DeletedFlag=0";
+		sql="SELECT Composer_Id from Composer_Master WHERE LOWER(Composer_Name) LIKE LOWER('%"+name+"%') AND Composer_DeletedFlag=0";
 		try {
 			st = conn.createStatement();
 			rs = st.executeQuery(sql);
 			if(!rs.next()) return null;
 			else {
 				sql =  "SELECT * from Song_Master INNER JOIN Composer_Song_Assoc ON Composer_Song_Assoc.Song_Id=Song_Master.Song_Id WHERE "
-						+ "Composer_Song_Assoc.Composer_Id IN (select Composer_Id FROM Composer_Master WHERE Composer_Name='"+name+"') AND Song_Master.Song_DeletedFlag=0";
+						+ "Composer_Song_Assoc.Composer_Id IN (select Composer_Id FROM Composer_Master WHERE LOWER(Composer_Name) LIKE LOWER('%"+name+"%')) AND Song_Master.Song_DeletedFlag=0";
 				rs = st.executeQuery(sql);
 				while(rs.next()){
 					SongBean sb = new SongBean();
@@ -202,7 +202,7 @@ public class AdminDao implements IAdminDao {
 	public ArtistBean searchArtist(String name) {
 		ResultSet rs;
 		ArtistBean ab = new ArtistBean();
-		sql="SELECT * from Artist_Master WHERE Artist_Name='"+name+"' AND Artist_DeletedFlag=0";
+		sql="SELECT * from Artist_Master WHERE LOWER(Artist_Name) LIKE LOWER('%"+name+"%') AND Artist_DeletedFlag=0";
 		try {
 			st = conn.createStatement();
 			rs = st.executeQuery(sql);
@@ -231,7 +231,7 @@ public class AdminDao implements IAdminDao {
 	public ComposerBean searchComposer(String name) {
 		ResultSet rs;
 		ComposerBean cb = new ComposerBean();
-		sql="SELECT * from Composer_Master WHERE Composer_Name='"+name+"' AND Composer_DeletedFlag=0";
+		sql="SELECT * from Composer_Master WHERE LOWER(Composer_Name) LIKE LOWER('%"+name+"%') AND Composer_DeletedFlag=0";
 		try {
 			st = conn.createStatement();
 			rs = st.executeQuery(sql);
@@ -315,7 +315,7 @@ public class AdminDao implements IAdminDao {
 		}
 		
 		else {
-			sql = "SELECT * FROM Song_Master WHERE Song_Name='"+songBean.getName()+"'";
+			sql = "SELECT * FROM Song_Master WHERE LOWER(Song_Name) LIKE LOWER('%"+songBean.getName()+"%')";
 			try {
 				st = conn.createStatement();
 				ResultSet rs = st.executeQuery(sql);
@@ -389,7 +389,7 @@ public class AdminDao implements IAdminDao {
 		}
 		
 		else {
-			sql = "SELECT * FROM Song_Master WHERE Song_Name='"+songBean.getName()+"'";
+			sql = "SELECT * FROM Song_Master WHERE LOWER(Song_Name) LIKE LOWER('%"+songBean.getName()+"%')";
 			try {
 				st = conn.createStatement();
 				ResultSet rs = st.executeQuery(sql);
@@ -508,7 +508,7 @@ public class AdminDao implements IAdminDao {
 		ResultSet rs;
 		try {
 			st = conn.createStatement();
-			sql = "SELECT Song_Id, Song_Name, Song_Duration FROM Song_Master WHERE Song_Name='"+name+"' AND Song_DeletedFlag=0";
+			sql = "SELECT Song_Id, Song_Name, Song_Duration FROM Song_Master WHERE LOWER(Song_Name) LIKE LOWER('%"+name+"%') AND Song_DeletedFlag=0";
 			rs = st.executeQuery(sql);
 			if(!rs.next()) return null;
 			else {

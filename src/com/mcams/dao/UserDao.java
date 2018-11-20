@@ -19,14 +19,14 @@ public class UserDao implements IUserDao {
 		ResultSet rs;
 		ArrayList<SongBean> songList = new ArrayList<SongBean>();
 		
-		sql="SELECT Artist_Id FROM Artist_Master WHERE Artist_Name='"+name+"' AND Artist_DeletedFlag=0";
+		sql="SELECT Artist_Id FROM Artist_Master WHERE LOWER(Artist_Name) LIKE LOWER('%"+name+"%') AND Artist_DeletedFlag=0";
 		try {
 			st = conn.createStatement();
 			rs = st.executeQuery(sql);
 			if(!rs.next()) return null;
 			else {
 				sql =  "SELECT Song_Master.Song_Name, Song_Master.Song_Duration FROM Song_Master INNER JOIN Artist_Song_Assoc ON Artist_Song_Assoc.Song_Id=Song_Master.Song_Id WHERE "
-						+ "Artist_Song_Assoc.Artist_Id IN (SELECT Artist_Id FROM Artist_Master WHERE Artist_Name='"+name+"') AND Song_Master.Song_DeletedFlag=0";
+						+ "Artist_Song_Assoc.Artist_Id IN (SELECT Artist_Id FROM Artist_Master WHERE LOWER(Artist_Name) LIKE LOWER('%"+name+"%')) AND Song_Master.Song_DeletedFlag=0";
 				rs = st.executeQuery(sql);
 				while(rs.next()){
 					SongBean sb = new SongBean();
@@ -49,14 +49,14 @@ public class UserDao implements IUserDao {
 		ResultSet rs;
 		ArrayList<SongBean> songList = new ArrayList<SongBean>();
 		
-		sql="SELECT Composer_Id FROM Composer_Master WHERE Composer_Name='"+name+"' AND Composer_DeletedFlag=0";
+		sql="SELECT Composer_Id FROM Composer_Master WHERE LOWER(Composer_Name) LIKE LOWER('%"+name+"%') AND Composer_DeletedFlag=0";
 		try {
 			st = conn.createStatement();
 			rs = st.executeQuery(sql);
 			if(!rs.next()) return null;
 			else {
 				sql =  "SELECT Song_Master.Song_Name, Song_Master.Song_Duration FROM Song_Master INNER JOIN Composer_Song_Assoc ON Composer_Song_Assoc.Song_Id=Song_Master.Song_Id WHERE "
-						+ "Composer_Song_Assoc.Composer_Id IN (SELECT Composer_Id FROM Composer_Master WHERE Composer_Name='"+name+"') AND Song_Master.Song_DeletedFlag=0";
+						+ "Composer_Song_Assoc.Composer_Id IN (SELECT Composer_Id FROM Composer_Master WHERE LOWER(Composer_Name) LIKE LOWER('%"+name+"%')) AND Song_Master.Song_DeletedFlag=0";
 				rs = st.executeQuery(sql);
 				while(rs.next()){
 					SongBean sb = new SongBean();
