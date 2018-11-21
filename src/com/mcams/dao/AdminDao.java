@@ -15,7 +15,7 @@ public class AdminDao implements IAdminDao {
 	
 	private static String sql;
 	private static Statement st;
-	private static Connection conn = DBUtil.getConnection();
+	private static Connection conn = AuthenticationDAO.conn;
 
 	@Override
 	public ArtistBean createArtist(ArtistBean artBean, boolean isUpdate) {
